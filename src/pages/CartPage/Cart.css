@@ -1,0 +1,304 @@
+.cart__container {
+    margin-block: 100px;
+}
+
+.cart__title {
+    font-size: 40px;
+    margin-bottom: 27px;
+    color: #5579F6;
+}
+
+.cart__info {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+/* ─── Список товаров ────────────────────────────────────────────────────────── */
+.cart__items {
+    flex: 1;
+    background-color: #F1F1F1;
+    border-radius: 25px;
+    padding: 20px 18px;
+    min-width: 0; /* важно для flex-дочерних элементов */
+}
+
+/* Заголовки таблицы — должны точно совпадать с .cartItem */
+/* desktop: картинка(80) | инфо(1fr) | степпер(160) | цена(110) | корзина(44) */
+.cart__headlines {
+    display: grid;
+    grid-template-columns: 80px 1fr 160px 110px 44px;
+    gap: 0 12px;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 500;
+    padding-bottom: 16px;
+    margin-bottom: 10px;
+    color: #8E8E8E;
+}
+
+/* «Товар» — 2-я колонка (после пустой картинки) */
+.cart__headlines span:nth-child(1) {
+    grid-column: 2;
+    text-align: left;
+}
+
+/* «Количество» — 3-я колонка */
+.cart__headlines span:nth-child(2) {
+    grid-column: 3;
+    text-align: center;
+}
+
+/* «Цена» — 4-я колонка */
+.cart__headlines span:nth-child(3) {
+    grid-column: 4;
+    text-align: center;
+}
+
+/* ─── Итого ─────────────────────────────────────────────────────────────────── */
+.cart__total {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #F1F1F1;
+    border-radius: 25px;
+    padding: 35px;
+    width: 340px;
+    flex-shrink: 0;
+}
+
+.cart__orders {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.cart__goods,
+.cart__sum {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.cart__sum {
+    margin-top: 40px;
+}
+
+.cart__sum-box {
+    border-top: 1px solid #8E8E8E;
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+.cart__pay {
+    background-color: #5483EA;
+    padding: 10px 69px;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-weight: 700;
+    width: 100%;
+    height: 46px;
+    align-self: center;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    border: none;
+    max-width: 300px;
+}
+
+.cart__pay:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* ─── Пустая корзина ─────────────────────────────────────────────────────────── */
+.cart__empty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    gap: 20px;
+    width: 100%;
+}
+
+.cart__empty {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    color: #8E8E8E;
+}
+
+.cart__to-buy {
+    padding: 12px 40px;
+    background-color: #5483EA;
+    color: #FFFFFF;
+    border-radius: 12px;
+    font-size: 18px;
+    transition: background 0.3s;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.cart__to-buy:hover {
+    background-color: #3d6cd1;
+}
+
+/* ─── Модалки ────────────────────────────────────────────────────────────────── */
+.cart__qr-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+}
+
+.cart__qr-modal {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+}
+
+.cart__qr-modal h2 { margin: 0 0 12px; font-size: 20px; }
+.cart__qr-desc { color: #666; font-size: 14px; margin-bottom: 20px; }
+.cart__qr-actions { display: flex; gap: 10px; justify-content: center; }
+
+.cart__qr-profile {
+    padding: 11px 24px;
+    background: #5496ea;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cart__qr-close {
+    padding: 11px 24px;
+    background: none;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+}
+
+.cart__error {
+    color: #5496ea;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.cart__auth-hint {
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    margin-top: 8px;
+}
+
+
+/* ─── 1256px: убираем колонку картинки ────────────────────────────────────── */
+@media (max-width: 1256px) {
+    .cart__title {
+        font-size: 30px;
+    }
+
+    .cart__items {
+        width: 100%;
+    }
+
+   
+
+    /* колонки без картинки: инфо | степпер | цена | корзина */
+    .cart__headlines {
+        grid-template-columns: 2fr 1fr 1fr 0.3fr;
+        gap: 0 8px;
+    }
+
+    .cart__headlines span:nth-child(1) {
+        grid-column: 1;
+        text-align: left;
+    }
+
+    .cart__headlines span:nth-child(2) {
+        grid-column: 2;
+        text-align: center;
+    }
+
+    .cart__headlines span:nth-child(3) {
+        grid-column: 3;
+        text-align: center;
+    }
+}
+
+
+/* ─── 950px: панели переносятся в стопку ─────────────────────────────────── */
+@media (max-width: 950px) {
+    .cart__info {
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    /* .cart__items {
+        width: 100%;
+    } */
+}
+
+
+@media (max-width:810px) {
+    .cart__info{
+        flex-direction: column;
+    }
+    .cart__total{
+        width: 100%;
+    }
+    
+}
+
+/* ─── 480px: мобайл — прячем заголовки, CartItem сам рендерит стек ─────────── */
+@media (max-width: 480px) {
+    .cart__container {
+        margin-block: 70px;
+    }
+
+    .cart__title {
+        font-size: 24px;
+        margin-bottom: 18px;
+    }
+
+    /* Прячем строку заголовков — на мобайле она не нужна */
+    .cart__headlines {
+        display: none;
+    }
+
+    .cart__items {
+        padding: 16px 12px;
+        border-radius: 16px;
+    }
+
+    .cart__total {
+        padding: 20px 16px;
+        border-radius: 16px;
+        gap: 10px;
+    }
+
+    .cart__goods,
+    .cart__sum {
+        font-size: 17px;
+    }
+
+    .cart__pay {
+        font-size: 17px;
+        height: 44px;
+        padding: 10px 20px;
+    }
+}

@@ -1,0 +1,10 @@
+meta:
+  environment: node
+  toolchain:
+    name: browser
+    version: 20
+
+build:
+  command: cd frontend/battery-shop && npm install && npm run build
+  artifacts:
+    "frontend/battery-shop/dist/*": /

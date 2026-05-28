@@ -1,0 +1,515 @@
+.about{
+    padding:120px 20px;
+}
+
+.about__wrapper{
+
+    position:relative;
+
+    max-width:1400px;
+
+    margin:auto;
+
+    /* background:#fff;
+
+    border-radius:32px;
+
+    border:1px solid #eef1fb;
+
+    box-shadow:
+    0 10px 40px rgba(25,50,100,.04); */
+
+    padding:40px 70px 60px;
+}
+
+
+
+.about__title{
+
+    text-align:center;
+
+    color:#5579F6;
+
+    font-size:40px;
+    margin-bottom:50px;
+
+    letter-spacing:.02em;
+}
+
+/* ---------------------- */
+
+.about__grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+    justify-self: center;
+    align-items:center;
+
+    gap:40px;
+}
+
+/* ---------------------- */
+
+.about__cards{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+}
+
+/* ---------------------- */
+
+.advantage-card{
+
+    position:relative;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:50px;
+
+    min-height:120px;
+
+    padding:28px;
+
+    background:#f9fbff;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    transition:.3s;
+}
+
+.advantage-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+    0 10px 30px rgba(26,90,217,.08);
+}
+
+/* ---------------------- */
+
+.advantage-icon{
+
+    width:76px;
+    height:76px;
+
+    min-width:76px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:34px;
+
+    font-weight:700;
+}
+
+
+.advantage-icon > img{
+    width: 30px;
+}
+
+.advantage-icon.blue{
+
+    background:#3f71e8;
+    color:white;
+}
+
+.advantage-icon.yellow{
+
+    background:#FAED7C;
+}
+
+.advantage-icon.light{
+
+    background:#dfe8ff;
+}
+
+/* ---------------------- */
+
+.advantage-content{
+
+    position:relative;
+    z-index:2;
+    width: 350px;
+}
+
+.advantage-content h3{
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:#17375f;
+
+    margin-bottom:12px;
+}
+
+.advantage-content p{
+
+    font-size:16px;
+
+    color:#6c7280;
+
+    line-height:1.7;
+
+    max-width:420px;
+}
+
+/* ---------------------- */
+
+.advantage-number{
+
+    /* position:absolute; */
+
+    /* right:40px;
+    top:50%; */
+
+    /* transform:translateY(-50%); */
+
+    font-size:82px;
+
+    font-weight:800;
+
+    color:#eef2fd;
+
+    z-index:1;
+
+    pointer-events:none;
+}
+
+/* ---------------------- */
+
+.about__image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about__image img {
+    /* width: 100%; */
+    /* max-width: 450px; */
+    /* height: auto; */
+    max-width: 350px;
+    animation: floatBattery 5s ease-in-out infinite;
+}
+
+/* ---------------------- */
+
+/* .about__dots{
+
+    position:absolute;
+
+    top:25px;
+    right:35px;
+
+    width:140px;
+    height:140px;
+
+    background-image:
+    radial-gradient(
+      rgba(26,90,217,.18) 1.5px,
+      transparent 1.5px
+    );
+
+    background-size:12px 12px;
+} */
+
+/* ---------------------- */
+
+@keyframes floatBattery{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+/* ---------------------- */
+
+@media(max-width:1200px){
+
+    .about__grid{
+        align-self: center;
+        grid-template-columns:1fr;
+    }
+
+    .about__image{
+
+        justify-content:center;
+    }
+
+    .about__image img{
+        display: none;
+        width:380px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about {
+        padding: 70px 15px;
+    }
+ 
+    .about__wrapper {
+        padding: 30px 20px;
+    }
+ 
+    .about__title {
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+ 
+    .about__cards {
+        gap: 16px;
+    }
+ 
+    .advantage-card {
+        padding: 18px 16px;
+        gap: 16px;
+        min-height: unset;
+        align-items: center;
+    }
+ 
+    .advantage-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        font-size: 22px;
+    }
+ 
+    .advantage-icon > img {
+        width: 22px;
+    }
+ 
+    .advantage-content h3 {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+ 
+    .advantage-content p {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+ 
+    /* декоративный номер на мобайле мешает — прячем */
+    .advantage-number {
+        display: none;
+    }
+}
+ 
+ 
+@media (max-width: 480px) {
+    .about {
+        padding: 50px 12px;
+    }
+ 
+    .about__wrapper {
+        padding: 24px 14px;
+    }
+ 
+    .about__title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+ 
+    .advantage-card {
+        padding: 14px 12px;
+        border-radius: 16px;
+        max-width: 100%;      /* ← добавить */
+        box-sizing: border-box; 
+        width: 100%;           /* ← добавить */
+    }
+    
+    /* Добавить обертке ограничение */
+    .about__cards {
+        width: 100%;
+        overflow-x: hidden;
+    }
+ 
+    .advantage-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+    }
+ 
+    .advantage-icon > img {
+        width: 18px;
+    }
+    
+    /* Фикс для контента */
+    .advantage-content {
+        width: auto;
+        max-width: calc(100% - 60px);
+    }
+    
+    .advantage-content p {
+        max-width: 100%;
+        word-wrap: break-word;
+    }
+}
+
+
+/* ─── 400px ──────────────────────────────────────────────────────────────────── */
+@media (max-width: 400px) {
+    .about {
+        padding: 40px 10px;
+    }
+
+    .about__wrapper {
+        padding: 20px 12px;
+    }
+
+    .about__title {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .advantage-card {
+        padding: 12px 10px;
+        gap: 12px;
+        border-radius: 14px;
+        flex-wrap: wrap; /* позволяет переносить при критической ширине */
+    }
+
+    .advantage-icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+    }
+
+    .advantage-icon > img {
+        width: 16px;
+    }
+
+    .advantage-content h3 {
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .advantage-content p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+}
+
+
+/* ─── 360px ──────────────────────────────────────────────────────────────────── */
+@media (max-width: 360px) {
+    .about {
+        padding: 35px 8px;
+    }
+
+    .about__wrapper {
+        padding: 16px 10px;
+    }
+
+    .about__title {
+        font-size: 18px;
+        margin-bottom: 16px;
+        letter-spacing: .01em;
+    }
+
+    .advantage-card {
+        padding: 10px 8px;
+        gap: 10px;
+        border-radius: 12px;
+    }
+
+    .advantage-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+    }
+
+    .advantage-icon > img {
+        width: 14px;
+    }
+
+    .advantage-content h3 {
+        font-size: 13px;
+        margin-bottom: 3px;
+    }
+
+    .advantage-content p {
+        font-size: 11px;
+        line-height: 1.45;
+    }
+}
+
+
+/* ─── 320px — самый крайний случай ─────────────────────────────────────────────*/
+@media (max-width: 320px) {
+    .about {
+        padding: 30px 6px;
+    }
+
+    .about__wrapper {
+        padding: 12px 8px;
+    }
+
+    .about__title {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .advantage-card {
+        padding: 8px 6px;
+        gap: 8px;
+        border-radius: 10px;
+        flex-direction: column;      /* иконка сверху, контент снизу */
+        align-items: flex-start;
+        text-align: center;
+    }
+
+    .advantage-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        margin: 0 auto 4px;          /* центрируем иконку */
+    }
+
+    .advantage-icon > img {
+        width: 16px;
+    }
+
+    .advantage-content {
+        text-align: center;
+        width: 100%;
+    }
+
+    .advantage-content h3 {
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .advantage-content p {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    /* отключаем hover на мобилках для производительности */
+    .advantage-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+
+
+

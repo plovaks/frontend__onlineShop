@@ -1,0 +1,86 @@
+header{
+    background-color: white;
+}
+
+.header__dropdown{
+    display: none;
+}
+
+.header__logo:hover .header__dropdown{
+    display:block;
+}
+
+.header__logo{
+    position: relative;
+}
+
+.header__dropdown{
+    position: absolute;
+    background-color: rgb(136, 135, 135);
+    padding: 5px 10px;
+    top:70px;
+    font-size: 14px;
+    border-radius: 10px;
+    left:10px;
+    box-sizing: border-box;
+    color:white;
+    width:max-content;
+}
+
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile__image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color:#5496ea ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+}
+
+.profile__avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+
+.header__profile-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.header__profile-btn:hover {
+    transform: scale(1.05);
+}
+
+.nav__user-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header__icon--profile{
+    width: 30px;
+}
+
+.header__icon--cart{
+    height: 26px;
+}

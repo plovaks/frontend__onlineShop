@@ -1,0 +1,101 @@
+.filter__container{
+    position: relative;
+}
+
+.filter__btn{
+    width: 230px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 9px;
+    height: 38px;
+    background-color: transparent;
+    border: 1px #5579F6 solid;
+    border-radius: 15px;
+    margin-top: 4px;
+    color:black;
+    font-size: 14px;
+    font-family: 'Montserrat';
+    position: relative;
+}
+
+.filter__btn img{
+    width: 16px;
+}
+
+/* выпадающий список с вариантами */
+
+.filter__dropdown{
+    width: 200px;
+    position: absolute;
+    top:50px;
+    background-color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.filter__option{
+    display: flex;
+    align-items: center;
+    gap:7px;
+}
+
+.filter__checkbox-real {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.filter__checkbox-custom {
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 4px; 
+    vertical-align: sub;
+    transition: all 0.2s ease;
+}
+
+
+.filter__option:hover .filter__checkbox-custom {
+    border-color: #5579F6;
+}
+
+
+.filter__checkbox-real:checked + .filter__checkbox-custom {
+    background-color: #5579F6;
+    border-color: #5579F6;
+}
+
+
+.filter__checkbox-real:checked + .filter__checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+@media (min-width:1025px) {
+    .filter__btn{
+        width: 200px;
+        font-size: 14px;
+    }
+   
+}
+

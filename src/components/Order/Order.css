@@ -1,0 +1,45 @@
+.order {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* цена прижата вправо, не фиксированный gap */
+    gap: 12px;
+}
+
+.order__name {
+    font-size: 15px;
+    font-weight: 500;
+    flex: 1; /* занимает доступное пространство */
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.order__price {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    color: #4F77F1;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0; /* цена не сжимается */
+    
+}
+
+.order__price img {
+    width: 14px;
+    height: 14px;
+}
+
+
+
+
+@media (max-width: 480px) {
+    .order__name {
+        font-size: 14px;
+    }
+
+    .order__price {
+        font-size: 14px;
+    }
+}
