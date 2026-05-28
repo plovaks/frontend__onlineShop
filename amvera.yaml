@@ -5,7 +5,6 @@ meta:
     version: 20
 
 build:
-  buildCommand: npm run build
   artifacts:
     "dist/*": /
     "nginx.conf": /etc/nginx/conf.d/default.conf
