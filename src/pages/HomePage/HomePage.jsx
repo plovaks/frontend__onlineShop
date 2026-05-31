@@ -11,11 +11,30 @@ import rightYellow from "../../assets/images/main-page-rightYellow.png"
 import Header from "../../components/Header/Header";
 import './HomePage.css'
 
+
+
+const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+    
+    const listener = (e) => setMatches(e.matches);
+    media.addEventListener('change', listener);
+    
+    return () => media.removeEventListener('change', listener);
+  }, [query]);
+
+  return matches;
+};
+
+
 export default function HomePage(){
     const [isVK, setIsVK] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const containerRef = useRef(null);
-    
+    const isMobileOrientation = useMediaQuery('(max-width: 768px)');
     // Parallax эффект для центральной батарейки
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -36,7 +55,8 @@ export default function HomePage(){
     }, []);
     
     const needsVKPadding = isVK && isMobile;
-    
+   
+
     return(
         <main 
             ref={containerRef}
@@ -107,18 +127,16 @@ export default function HomePage(){
                                 className="main-page__image--centered" 
                                 src={centralImg} 
                                 alt="central batteries"
-                                style={{ 
-                                    scale: centralScale,
-                                }}
-                                animate={{ 
-                                    y: [0, -10, 0],
-                                }}
-                                transition={{ 
-                                    duration: 3,
-                                    repeat: Infinity,
-                                    repeatType: "reverse",
-                                    ease: "easeInOut"
-                                }}
+                                style={{ scale: centralScale }}
+                                {...(!isMobileOrientation && {
+                                    animate: { y: [0, -10, 0] },
+                                    transition: { 
+                                        duration: 3,
+                                        repeat: Infinity,
+                                        repeatType: "reverse",
+                                        ease: "easeInOut"
+                                    }
+                                })}
                             />
                             
                             <img 
