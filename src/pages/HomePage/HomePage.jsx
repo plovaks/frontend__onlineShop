@@ -34,7 +34,7 @@ export default function HomePage(){
     const [isVK, setIsVK] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const containerRef = useRef(null);
-    const isMobileOrientation = useMediaQuery('(max-width: 768px)');
+    const isSmallScreen = useMediaQuery('(max-width: 768px)');
     // Parallax эффект для центральной батарейки
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -128,15 +128,13 @@ export default function HomePage(){
                                 src={centralImg} 
                                 alt="central batteries"
                                 style={{ scale: centralScale }}
-                                {...(!isMobileOrientation && {
-                                    animate: { y: [0, -10, 0] },
-                                    transition: { 
-                                        duration: 3,
-                                        repeat: Infinity,
-                                        repeatType: "reverse",
-                                        ease: "easeInOut"
-                                    }
-                                })}
+                                animate={!isSmallScreen ? { y: [0, -10, 0] } : {}}
+                                transition={!isSmallScreen ? { 
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    repeatType: "reverse",
+                                    ease: "easeInOut"
+                                } : {}}
                             />
                             
                             <img 
