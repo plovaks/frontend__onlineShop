@@ -65,7 +65,7 @@
 
 .form__register input:focus,
 .form__login input:focus {
-    border-color: #5496ea;             
+    border-color: #5579f6;             
     background: #fff;
 }
 
@@ -74,7 +74,7 @@
 .form__login button[type="submit"] {
     margin-top: 4px;
     padding: 13px;
-    background: #5496ea;             
+    background: #5579f6;             
     color: #ffffff;
     border: none;
     border-radius: 10px;
@@ -106,7 +106,7 @@
 .modal__switch button {
     background: none;
     border: none;
-    color: #5496ea;
+    color: #5579f6;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -115,14 +115,14 @@
 }
 
 .modal__switch button:hover {
-    color: #5496ea;
+    color: #5579f6;
 }
 
 
 .modal__error {
     background: #fff0ed;
     border: 1px solid #ffcbb8;
-    color: #5496ea;
+    color: #5579f6;
     border-radius: 8px;
     padding: 10px 14px;
     font-size: 13px;

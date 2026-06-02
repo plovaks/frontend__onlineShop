@@ -30,6 +30,7 @@ function App() {
             <Route path="cart" element={<Cart />} />
             <Route path="product/:id" element={<BatteryPage />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="about" element={<AboutPage/>}/>
           </Route>
       </Routes>
 

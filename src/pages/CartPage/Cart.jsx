@@ -33,7 +33,7 @@ export default function Cart() {
         try {
             const items = cart.map(item => ({
                 product_id: item.id,
-                name: `${item.model} ${item.name}`,
+                name: item.name,
                 price: item.price,
                 quantity: item.quantity
             }));

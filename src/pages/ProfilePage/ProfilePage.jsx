@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../components/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import Header from "../../components/Header/Header.jsx"
 import './ProfilePage.css'
 
 export default function ProfilePage() {
@@ -26,7 +27,9 @@ export default function ProfilePage() {
                 const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customer/orders`, {
                     headers: { Authorization: `Bearer ${token}` }
                 })
-                const data = await res.json()
+                const data = await res.json();
+                console.log('Ответ сервера:', data);
+                console.log('Тип данных:', Array.isArray(data) ? 'массив' : typeof data);
                 setOrders(data)
             } catch (err) {
                 console.error('Ошибка загрузки заказов:', err)
@@ -128,6 +131,8 @@ export default function ProfilePage() {
     if (!user) return null
 
     return (
+        <>
+        <Header/>
         <div className="profile">
             <div className="profile__container">
 
@@ -290,5 +295,7 @@ export default function ProfilePage() {
 
             </div>
         </div>
+        </>
+        
     )
 }

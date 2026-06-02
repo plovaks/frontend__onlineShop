@@ -15,6 +15,7 @@ button{
     display: flex;
     flex-direction: column;
     gap: 24px;
+    margin-top: 50px;
 }
 
 .profile__card {
@@ -31,7 +32,7 @@ button{
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: #5496ea;
+    background: #5579f6;
     color: #fff;
     font-size: 26px;
     font-weight: 700;
@@ -79,8 +80,8 @@ button{
 }
 
 .profile__logout:hover {
-    border-color: #5496ea;
-    color: #5496ea;
+    border-color: #5579f6;
+    color: #5579f6;
 }
 
 
@@ -153,9 +154,9 @@ button{
 }
 
 .profile__inline-edit:hover {
-    background: #5496ea;
+    background: #5579f6;
     color: #fff;
-    border-color: #5496ea;
+    border-color: #5579f6
 }
 
 
@@ -182,7 +183,7 @@ button{
 }
 
 .profile__input:focus {
-    border-color: #5496ea;
+    border-color: #5579f6;
     background: #fff;
 }
 
@@ -193,7 +194,7 @@ button{
 
 .profile__save-btn {
     padding: 8px 20px;
-    background: #5496ea;
+    background: #5579f6;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -205,7 +206,7 @@ button{
 }
 
 .profile__save-btn:hover { 
-    background: #3d7bca; 
+    background: #5579f6; 
 }
 
 .profile__cancel-btn {
@@ -249,7 +250,7 @@ button{
     transition: border-color 0.2s;
 }
 
-.profile__order:hover { border-color: #5496ea; }
+.profile__order:hover { border-color: #5579f6; }
 
 .profile__order-header {
     display: flex;
@@ -290,7 +291,7 @@ button{
 .profile__order-total {
     font-size: 15px;
     font-weight: 700;
-    color: #5496ea;
+    color: #5579f6;
 }
 
 .profile__order-arrow {
@@ -347,7 +348,7 @@ button{
 }
 
 .profile__order-summary strong {
-    color: #5496ea;
+    color: #5579f6;
     font-size: 16px;
 }
 
@@ -371,7 +372,7 @@ button{
 
 .profile__shop-btn {
     padding: 10px 24px;
-    background: #5496ea;
+    background: #5579f6;
     color: #fff;
     border: none;
     border-radius: 8px;

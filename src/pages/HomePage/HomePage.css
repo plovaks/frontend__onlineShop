@@ -120,6 +120,8 @@ nav {
     color: #FFFDF5;
     margin-top: 100px;
     overflow: visible;
+   
+    
 }
 
 .main-page__title {
@@ -253,7 +255,7 @@ nav {
     }
     
     header {
-        padding-inline: 20%;
+        padding-inline: 25%;
     }
     
     .main-page__image--centered {
@@ -262,15 +264,18 @@ nav {
         
     }
     .main-page__info{
-        gap:30px;
-        flex-direction: column;
-        align-items: flex-start;
-        /* left:10%; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
     }
 
     .main-page__text{
         justify-content: space-around;
-        top:110px;
+        top:85px;
+        font-size: 45px;
+        z-index: 100;
+        
     }
     
     .main-page__image__rightRed,
@@ -298,8 +303,16 @@ nav {
     }
     .main-page__text{
         font-size: 30px;
-        justify-content: space-evenly;
+        justify-content: center;
+        gap:50px;
         top:80px;
+    }
+
+    .main-page__btn--buy{
+        font-size: 24px;
+    }
+    .main-page__sales{
+        font-size: 24px;
     }
 }
 

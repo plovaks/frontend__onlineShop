@@ -206,3 +206,77 @@
     text-align: center;
    }
 }
+
+
+/* Пустое состояние каталога */
+.catalog__empty {
+    grid-column: 1 / -1;
+    padding: 60px 20px;
+    text-align: center;
+    background: #f9f9f9;
+    border-radius: 16px;
+    margin: 40px 0;
+}
+
+.empty-state {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    color: #ccc;
+    stroke-width: 1.5;
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 24px;
+}
+
+.reset-filters-btn {
+    padding: 12px 24px;
+    background: #5579f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.reset-filters-btn:hover {
+    background: #4365d4;
+}
+
+/* Бейдж с количеством активных фильтров для мобильной версии */
+.filters-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #5579f6;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filters__mobile {
+    position: relative;
+}

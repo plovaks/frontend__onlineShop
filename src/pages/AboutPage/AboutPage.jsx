@@ -31,7 +31,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <section className="about">
+    <section className="about" id="about">
 
       <div className="about__wrapper">
 

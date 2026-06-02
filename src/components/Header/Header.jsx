@@ -25,13 +25,11 @@ export default function Header({ className, needsVKPadding  }) {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        
         const checkVK = () => {
             const inVK = window.location.search.includes('vk_access_token') || 
                         window.location.href.includes('vk.com') ||
                         window.location.href.includes('vk\.com');
             setIsVK(inVK);
-            
             
             setIsMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
         };
@@ -54,11 +52,36 @@ export default function Header({ className, needsVKPadding  }) {
         navigate('/');
     }
 
-    
+    // Функция для прокрутки наверх
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Плавная прокрутка
+        });
+    };
+
+    // Обработчик клика по логотипу
+    const handleLogoClick = (e) => {
+        if (location.pathname === '/') {
+            // Если уже на главной - просто скроллим наверх
+            e.preventDefault();
+            scrollToTop();
+        } else {
+            // Если на другой странице - переходим на главную и скроллим наверх
+            // Навигация произойдет автоматически через Link
+            setTimeout(() => {
+                scrollToTop();
+            }, 100);
+        }
+    };
 
     return (
         <header className={className} style={headerStyle}>
-            <Link to='/' className="header__logo">
+            <Link 
+                to='/' 
+                className="header__logo"
+                onClick={handleLogoClick}
+            >
                 <img className="header__logo--img" src={logo} alt="logo" />
                 <div className="header__logo--text">
                     <p className="header__logo--name">Power</p>

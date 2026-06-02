@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ruble from "../../assets/icons/ruble.svg";
 import { useCart } from "../CartContext";
 import './AddToCart.css';
 
 export default function AddToCart({ product, price, salePrice }) {
     const { addToCart, cart } = useCart();
+    const navigate = useNavigate();
     
     const inCart = cart.find(item => item.id === product.id);
     
@@ -35,12 +37,20 @@ export default function AddToCart({ product, price, salePrice }) {
     };
 
     const handleInputChange = (e) => {
-        const value = e.target.value;
+        let value = e.target.value;
+        // Удаляем все нецифровые символы
+        value = value.replace(/\D/g, '');
+        
         if (value === "") {
             setCount("");
         } else {
             updateCount(value);
         }
+    };
+
+    // Переход в корзину
+    const goToCart = () => {
+        navigate('/cart');
     };
 
     if (!isAdded) {
@@ -64,14 +74,17 @@ export default function AddToCart({ product, price, salePrice }) {
             </p>
             <p className="purchase__sales">{salePrice}р/шт при покупке от 100шт</p>
             <div className="counter__wrapper">
-                <button className="btn purchase__inCart">В корзине</button>
+                <button className="btn purchase__inCart" onClick={goToCart}>
+                    В корзине 
+                </button>
                 <div className="purchase__counter">
                     <button className="counter__btn" onClick={() => updateCount(count - 1)}>-</button>
                     <input
-                        type="number"
+                        type="text"
                         value={count}
                         onChange={handleInputChange}
                         onBlur={() => { if (!count) updateCount(1); }}
+                        inputMode="numeric"
                     />
                     <button className="counter__btn" onClick={() => updateCount(count + 1)}>+</button>
                 </div>
