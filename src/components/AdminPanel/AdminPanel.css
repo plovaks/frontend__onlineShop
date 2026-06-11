@@ -1,0 +1,104 @@
+.admin-panel {
+    max-width: 1200px;
+    margin: 100px auto 40px;
+    padding: 20px;
+}
+
+.admin-panel h1 {
+    margin-bottom: 20px;
+}
+
+.admin-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.admin-tabs button {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.admin-tabs button.active {
+    color: #5579F6;
+    border-bottom: 2px solid #5579F6;
+}
+
+.admin-users table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.admin-users th,
+.admin-users td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-users th {
+    background-color: #f5f5f5;
+}
+
+.admin-btn-toggle {
+    padding: 6px 12px;
+    background-color: #5579F6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.admin-order-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.admin-order-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.admin-order-total {
+    color: #5579F6;
+    font-weight: bold;
+}
+
+.admin-order-items {
+    margin-top: 10px;
+}
+
+.admin-order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: #666;
+}
+
+.admin-loading {
+    text-align: center;
+    padding: 50px;
+}

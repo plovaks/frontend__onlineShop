@@ -4,7 +4,7 @@ import bridge from '@vkontakte/vk-bridge';
 export function PrivacyContext({ children }) {
   const [consentGiven, setConsentGiven] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [showFullPolicy, setShowFullPolicy] = useState(false); // для развернутой политики
+  const [showFullPolicy, setShowFullPolicy] = useState(false);
   const [isVKApp, setIsVKApp] = useState(false);
   const [checking, setChecking] = useState(true);
 
@@ -25,11 +25,19 @@ export function PrivacyContext({ children }) {
             setConsentGiven(true);
           }
         } else {
+          // ✅ Обычный браузер — автоматически сохраняем согласие
           setIsVKApp(false);
+          if (!localStorage.getItem('privacyConsent')) {
+            localStorage.setItem('privacyConsent', 'true');
+          }
           setConsentGiven(true);
         }
       } catch (error) {
+        // ✅ При ошибке тоже сохраняем
         setIsVKApp(false);
+        if (!localStorage.getItem('privacyConsent')) {
+          localStorage.setItem('privacyConsent', 'true');
+        }
         setConsentGiven(true);
       } finally {
         setChecking(false);
@@ -52,7 +60,7 @@ export function PrivacyContext({ children }) {
           value: 'true'
         });
       } catch (err) {
-        console.log('Ошибка сохранения:', err);
+        console.log('Ошибка сохранения в VK Storage:', err);
       }
     }
   };
@@ -122,8 +130,6 @@ export function PrivacyContext({ children }) {
         <h2>4. Хранение данных</h2>
         <p>Все данные хранятся на территории РФ в соответствии с 152-ФЗ.</p>
         
-       
-        
         <h2>5. Контакты</h2>
         <p>По вопросам конфиденциальности: powerstore.batteryshop@gmail.com</p>
         
@@ -147,7 +153,7 @@ export function PrivacyContext({ children }) {
     );
   }
 
-  // Модальное окно с краткой политикой и ссылкой на полную
+  // Модальное окно для VK
   if (isVKApp && !consentGiven && showModal) {
     return (
       <div style={{

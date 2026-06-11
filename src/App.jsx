@@ -6,6 +6,7 @@ import Catalog from './pages/CatalogPage/Catalog'
 import BatteryPage from './pages/BatteryPage/BatteryPage'
 import Cart from "./pages/CartPage/Cart.jsx"
 import Profile from "./pages/ProfilePage/ProfilePage.jsx"
+import AdminPanel from "./components/AdminPanel/AdminPanel.jsx"
 import { CartProvider } from "./components/CartContext.jsx"
 import { AuthProvider } from "./components/AuthContext.jsx"
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="product/:id" element={<BatteryPage />} />
             <Route path="profile" element={<Profile />} />
             <Route path="about" element={<AboutPage/>}/>
+            <Route path="/admin" element={<AdminPanel />} />
           </Route>
       </Routes>
 

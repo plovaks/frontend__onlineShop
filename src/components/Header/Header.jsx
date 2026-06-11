@@ -12,12 +12,13 @@ import { useAuth } from "../AuthContext.jsx"
 import { useState, useEffect } from 'react'
 import './Header.css'
 
-export default function Header({ className, needsVKPadding  }) {
+export default function Header({ className, needsVKPadding }) {
     const { uniqueCount } = useCart();
     const location = useLocation();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { user, logout } = useAuth();
+    const { user, token, logout } = useAuth();
     const navigate = useNavigate();
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const showDropdown = location.pathname === '/cart' || location.pathname === '/profile';
 
@@ -36,6 +37,29 @@ export default function Header({ className, needsVKPadding  }) {
         
         checkVK();
     }, []);
+
+    // Проверка прав администратора
+    useEffect(() => {
+        const checkAdminStatus = async () => {
+            if (user && token) {
+                try {
+                    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customer/me`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        setIsAdmin(data.is_admin || false);
+                    }
+                } catch (err) {
+                    console.error('Ошибка проверки прав администратора:', err);
+                }
+            } else {
+                setIsAdmin(false);
+            }
+        };
+        
+        checkAdminStatus();
+    }, [user, token]);
 
     const headerStyle = needsVKPadding ? { paddingTop: '44px' } : {};
 
@@ -56,19 +80,16 @@ export default function Header({ className, needsVKPadding  }) {
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth' // Плавная прокрутка
+            behavior: 'smooth'
         });
     };
 
     // Обработчик клика по логотипу
     const handleLogoClick = (e) => {
         if (location.pathname === '/') {
-            // Если уже на главной - просто скроллим наверх
             e.preventDefault();
             scrollToTop();
         } else {
-            // Если на другой странице - переходим на главную и скроллим наверх
-            // Навигация произойдет автоматически через Link
             setTimeout(() => {
                 scrollToTop();
             }, 100);
@@ -100,19 +121,26 @@ export default function Header({ className, needsVKPadding  }) {
 
             <nav className="header__menu">
                 <ul>
-                    <Link 
-                        to="/" 
-                        onClick={() => {
-                            if (location.pathname === '/') {
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                            }
-                        }}
-                    >Главная</Link>
-                    <li className="">
+                    <li>
+                        <Link 
+                            to="/" 
+                            onClick={() => {
+                                if (location.pathname === '/') {
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }
+                            }}
+                        >
+                            Главная
+                        </Link>
+                    </li>
+                    <li className="dropdown-container">
                         <DropdownMenu>
                             <HashLink smooth to="/#about">О нас</HashLink>
                             <HashLink smooth to="/#catalog">Каталог</HashLink>
                             <Link to='/cart'>Корзина</Link>
+                            {isAdmin && (
+                                <Link to="/admin">Админ панель</Link>
+                            )}
                         </DropdownMenu>
                     </li>
                 </ul>
