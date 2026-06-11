@@ -39,27 +39,29 @@ export default function Header({ className, needsVKPadding }) {
     }, []);
 
     // Проверка прав администратора
-    useEffect(() => {
-        const checkAdminStatus = async () => {
-            if (user && token) {
-                try {
-                    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customer/me`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
-                    if (res.ok) {
-                        const data = await res.json();
-                        setIsAdmin(data.is_admin || false);
-                    }
-                } catch (err) {
-                    console.error('Ошибка проверки прав администратора:', err);
+   useEffect(() => {
+    const checkAdminStatus = async () => {
+        if (user && token) {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customer/me`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    console.log('Данные пользователя:', data);  
+                    console.log('is_admin:', data.is_admin);    
+                    setIsAdmin(data.is_admin || false);
                 }
-            } else {
-                setIsAdmin(false);
+            } catch (err) {
+                console.error('Ошибка проверки прав администратора:', err);
             }
-        };
-        
-        checkAdminStatus();
-    }, [user, token]);
+        } else {
+            setIsAdmin(false);
+        }
+    };
+    
+    checkAdminStatus();
+}, [user, token]);
 
     const headerStyle = needsVKPadding ? { paddingTop: '44px' } : {};
 
