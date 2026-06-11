@@ -100,7 +100,14 @@ export default function Header({ className, needsVKPadding  }) {
 
             <nav className="header__menu">
                 <ul>
-                    <li><HashLink smooth to="/#home">Главная</HashLink></li>
+                    <Link 
+                        to="/" 
+                        onClick={() => {
+                            if (location.pathname === '/') {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }
+                        }}
+                    >Главная</Link>
                     <li className="">
                         <DropdownMenu>
                             <HashLink smooth to="/#about">О нас</HashLink>

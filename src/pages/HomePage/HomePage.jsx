@@ -41,7 +41,7 @@ export default function HomePage(){
         offset: ["start start", "end start"]
     });
     
-    const centralScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.3]);
+    const centralScale = useTransform(scrollYProgress, [0, 0.5], isSmallScreen ? [1, 1] : [1, 1.3]);
     
     useEffect(() => {
         const checkVK = () => {
