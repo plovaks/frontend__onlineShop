@@ -7,15 +7,14 @@ import rubleBlue from "../../assets/icons/rubleBlue.svg";
 import "./CartItem.css";
 
 export default function CartItem({ product, img, name, capacity, voltage, resistance, value, price }) {
-    console.log("CartItem получил product:", product);
-    const { addToCart, removeFromCart } = useCart();
+    const { updateQuantity, removeFromCart } = useCart();
     const [inputValue, setInputValue] = useState(value);
     const maxStock = product.stock || 0;
 
     const handleMinus = () => {
         if (value > 1) {
             const newValue = value - 1;
-            addToCart(product, newValue);
+            updateQuantity(product.id, newValue, maxStock);
             setInputValue(newValue);
         } else {
             removeFromCart(product.id);
@@ -23,65 +22,54 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
     };
 
     const handlePlus = () => {
-    const newValue = value + 1;
-    if (newValue <= maxStock) {
-        addToCart(product, newValue);
-        setInputValue(newValue);
-    } else {
-        alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
-    }
-};
+        const newValue = value + 1;
+        if (newValue <= maxStock) {
+            updateQuantity(product.id, newValue, maxStock);
+            setInputValue(newValue);
+        } else {
+            alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
+        }
+    };
 
     const handleInputChange = (e) => {
-        // Получаем введенное значение
         let rawValue = e.target.value;
-        
-        // Удаляем всё, кроме цифр (оставляем только 0-9)
         let cleanValue = rawValue.replace(/\D/g, '');
         
-        // Если после очистки пустая строка - ставим 1
         if (cleanValue === '') {
             cleanValue = '1';
         }
         
-        // Преобразуем в число
         let newValue = parseInt(cleanValue, 10);
         
-        // Проверка на NaN (на всякий случай)
         if (isNaN(newValue)) {
             newValue = 1;
         }
         
-        // Ограничиваем минимальное значение
         if (newValue < 1) {
             newValue = 1;
         }
         
-        // Опционально: максимальное значение (например, 999)
         if (newValue > maxStock && maxStock > 0) {
             alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
             newValue = maxStock;
         }
         
         setInputValue(newValue);
-        addToCart(product, newValue);
+        updateQuantity(product.id, newValue, maxStock);
     };
 
     const handleInputBlur = () => {
         if (inputValue !== value) {
-            addToCart(product, inputValue);
+            updateQuantity(product.id, inputValue, maxStock);
         }
     };
 
-    // Запрещаем вставку текста
     const handlePaste = (e) => {
         e.preventDefault();
         return false;
     };
 
-    // Запрещаем ввод нецифровых символов с клавиатуры
     const handleKeyDown = (e) => {
-        // Разрешаем клавиши управления
         const allowedKeys = [
             'Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 
             'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 
@@ -92,35 +80,50 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
             return;
         }
         
-        // Разрешаем цифры
         if (/^[0-9]$/.test(e.key)) {
             return;
         }
         
-        
         e.preventDefault();
+    };
+
+    // Запрещаем ввод Enter в поле
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            e.target.blur();
+        }
     };
 
     return (
         <div className="cartItem">
             <img 
-                src={product.img} 
+                src={product.img || img} 
                 alt={name} 
                 className="cart__image"
                 draggable={false}
                 onDragStart={(e) => e.preventDefault()}
             />
             <div className="cartItem__info">
-                <h4 className="cartItem__title">{product.name}</h4>
+                <h4 className="cartItem__title">{product.name || name}</h4>
                 <p className="cartItem__desc">
-                    <span>{product.capacity} мАч, </span>
-                    <span>{product.voltage} В, </span>
-                    <span>{product.resistance} мОм</span>
+                    <span>{product.capacity || capacity} мАч, </span>
+                    <span>{product.voltage || voltage} В, </span>
+                    <span>{product.resistance || resistance} мОм</span>
                 </p>
+                {maxStock > 0 && (
+                    <p className="cartItem__stock" style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+                        В наличии: {maxStock} шт.
+                    </p>
+                )}
             </div>
            
             <div className="cartItem__stepper">
-                <button className="cartItem__btn--minus" onClick={handleMinus} disabled={value <= 1}>
+                <button 
+                    className="cartItem__btn--minus" 
+                    onClick={handleMinus} 
+                    disabled={value <= 1}
+                >
                     <img src={minusIcon} alt="minus" />
                 </button>
                 
@@ -132,12 +135,17 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
                     onBlur={handleInputBlur}
                     onPaste={handlePaste}
                     onKeyDown={handleKeyDown}
+                    onKeyPress={handleKeyPress}
                     inputMode="numeric"
                     pattern="\d*"
                     placeholder="1"
                 />
                 
-                <button className="cartItem__btn--plus" onClick={handlePlus} disabled={value >= maxStock && maxStock > 0}>
+                <button 
+                    className="cartItem__btn--plus" 
+                    onClick={handlePlus} 
+                    disabled={value >= maxStock && maxStock > 0}
+                >
                     <img src={plusIcon} alt="plus" />
                 </button>
             </div>

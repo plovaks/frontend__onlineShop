@@ -64,7 +64,7 @@ export default function AddToCart({ product, price, salePrice }) {
                 <p className="purchase__price">
                     {price} <img src={ruble} alt="ruble" />
                 </p>
-                <p className="purchase__sales">{salePrice}р/шт при покупке от 100шт</p>
+                {/* <p className="purchase__sales">{salePrice}р/шт при покупке от 100шт</p> */}
                 <button className="btn purchase__addToCart" onClick={handleAddClick} disabled={count >= maxStock && maxStock > 0}>
                     Добавить в корзину
                 </button>
@@ -77,7 +77,7 @@ export default function AddToCart({ product, price, salePrice }) {
             <p className="purchase__price">
                 {price} <img src={ruble} alt="ruble" />
             </p>
-            <p className="purchase__sales">{salePrice}р/шт при покупке от 100шт</p>
+            {/* <p className="purchase__sales">{salePrice}р/шт при покупке от 100шт</p> */}
             <div className="counter__wrapper">
                 <button className="btn purchase__inCart" onClick={goToCart}>
                     В корзине 

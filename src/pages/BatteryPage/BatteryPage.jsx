@@ -124,7 +124,7 @@ const handleClose = () => {
                     <AddToCart
                         product={product} 
                         price={Math.trunc(product.price)}
-                        salePrice={Math.trunc(product.price) - 10} 
+                        // salePrice={Math.trunc(product.price) - 10} 
                     />
                 </div>
             </div>
