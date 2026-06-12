@@ -141,7 +141,7 @@ export default function Header({ className, needsVKPadding }) {
                             <HashLink smooth to="/#catalog">Каталог</HashLink>
                             <Link to='/cart'>Корзина</Link>
                             {isAdmin && (
-                                <Link to="/admin">Админ панель</Link>
+                                <Link to="/admin">Админ</Link>
                             )}
                         </DropdownMenu>
                     </li>

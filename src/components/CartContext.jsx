@@ -10,16 +10,15 @@ export const CartProvider = ({ children }) => {
     };
 
     const addToCart = (product, quantity) => {
-        // Проверка наличия товара
-        if (!product.in_stock || product.in_stock <= 0) {
+        // Проверка наличия товара (используем stock)
+        if (!product.stock || product.stock <= 0) {
             console.log("Товар отсутствует на складе");
             return;
         }
         
         // Нельзя добавить больше, чем есть в наличии
-        const requestedQuantity = quantity;
-        if (requestedQuantity > product.in_stock) {
-            console.log(`Недостаточно товара. В наличии: ${product.in_stock} шт.`);
+        if (quantity > product.stock) {
+            console.log(`Недостаточно товара. В наличии: ${product.stock} шт.`);
             return;
         }
 
@@ -27,9 +26,8 @@ export const CartProvider = ({ children }) => {
             const isExist = prev.find(item => item.id === product.id);
             if (isExist) {
                 const newQuantity = isExist.quantity + quantity;
-                // Проверяем, не превышает ли новое количество наличие
-                if (newQuantity > product.in_stock) {
-                    console.log(`Нельзя добавить больше ${product.in_stock} шт.`);
+                if (newQuantity > product.stock) {
+                    console.log(`Нельзя добавить больше ${product.stock} шт.`);
                     return prev;
                 }
                 return prev.map(item => 
@@ -40,13 +38,13 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    const updateQuantity = (id, newQuantity, in_stock) => {
+    const updateQuantity = (id, newQuantity, stock) => {
         if (newQuantity < 1) {
             removeFromCart(id);
             return;
         }
-        if (newQuantity > in_stock) {
-            console.log(`Недостаточно товара. В наличии: ${in_stock} шт.`);
+        if (newQuantity > stock) {
+            console.log(`Недостаточно товара. В наличии: ${stock} шт.`);
             return;
         }
         setCart(prev => prev.map(item =>

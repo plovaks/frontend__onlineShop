@@ -11,7 +11,7 @@ export default function CatalogItem({
   voltage,
   resistance,
   price,
-  in_stock,  // ← добавить пропс
+  stock,
 }) {
   
   const { addToCart, cart } = useCart();
@@ -21,8 +21,7 @@ export default function CatalogItem({
     e.preventDefault();
     e.stopPropagation();
 
-    // Не даём добавить, если товара нет в наличии
-    if (!in_stock || in_stock <= 0) {
+    if (!stock || stock <= 0) {
       console.log("Товар отсутствует на складе");
       return;
     }
@@ -35,7 +34,7 @@ export default function CatalogItem({
         capacity: capcity,    
         voltage: voltage,      
         resistance: resistance,
-        in_stock: in_stock
+        stock: stock
     };
     
     console.log("Добавляем товар:", productToAdd);
@@ -59,10 +58,10 @@ export default function CatalogItem({
         <p className="item__price">{Math.round(price)} ₽</p>
 
         <p className="item__stock">
-          {in_stock > 0 ? `В наличии: ${in_stock} шт.` : 'Нет в наличии'}
+          {stock > 0 ? `В наличии: ${stock} шт.` : 'Нет в наличии'}
         </p>
 
-        {!in_stock || in_stock <= 0 ? (
+        {!stock || stock <= 0 ? (
           <button className="item__cart--btn disabled" disabled>
             Нет в наличии
           </button>
@@ -92,8 +91,8 @@ export default function CatalogItem({
               <p>Емкость: {capcity} мАч</p>
               <p>Напряжение: {voltage} В</p>
               <p>Сопротивление: {resistance} мОм</p>
-              <p className={in_stock > 0 ? 'in-stock' : 'out-stock'}>
-                {in_stock > 0 ? `В наличии: ${in_stock} шт.` : 'Нет в наличии'}
+              <p className={stock > 0 ? 'in-stock' : 'out-stock'}>
+                {stock > 0 ? `В наличии: ${stock} шт.` : 'Нет в наличии'}
               </p>
             </div>
           </div>
@@ -104,7 +103,7 @@ export default function CatalogItem({
             {Math.round(price)} ₽
           </p>
 
-          {!in_stock || in_stock <= 0 ? (
+          {!stock || stock <= 0 ? (
             <button className="item__cart--btn disabled" disabled>
               Нет в наличии
             </button>
