@@ -102,3 +102,163 @@
     text-align: center;
     padding: 50px;
 }
+
+/* Вкладка товаров */
+.admin-products {
+    padding: 20px 0;
+}
+
+.admin-add-btn {
+    background-color: #5579F6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.admin-product-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.admin-product-form .form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.admin-product-form input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    flex: 1;
+}
+
+.admin-product-form input[type="checkbox"] {
+    width: auto;
+}
+
+.specs-section, .images-section {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.spec-item, .image-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: #f0f0f0;
+    margin-bottom: 5px;
+    border-radius: 6px;
+}
+
+.add-spec, .add-image {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.add-spec button, .add-image button {
+    background-color: #5579F6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-actions button[type="submit"] {
+    background-color: #5579F6;
+    color: white;
+    border: none;
+}
+
+.form-actions button[type="button"] {
+    background: none;
+    border: 1px solid #ddd;
+}
+
+.products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-product-card {
+    display: flex;
+    gap: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    align-items: center;
+}
+
+.product-image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-info h4 {
+    margin: 0 0 5px;
+}
+
+.product-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #5579F6;
+}
+
+.in-stock {
+    color: green;
+    font-size: 12px;
+}
+
+.out-stock {
+    color: red;
+    font-size: 12px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn, .delete-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.delete-btn:hover {
+    transform: scale(1.1);
+}
