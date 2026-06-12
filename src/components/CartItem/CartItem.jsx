@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCart } from "../CartContext";
 import bin from "../../assets/icons/bin.svg";
 import plusIcon from "../../assets/icons/plus.svg";
@@ -11,11 +11,15 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
     const [inputValue, setInputValue] = useState(value);
     const maxStock = product.stock || 0;
 
+    // Синхронизация локального состояния с пропсом value
+    useEffect(() => {
+        setInputValue(value);
+    }, [value]);
+
     const handleMinus = () => {
         if (value > 1) {
             const newValue = value - 1;
             updateQuantity(product.id, newValue, maxStock);
-            setInputValue(newValue);
         } else {
             removeFromCart(product.id);
         }
@@ -25,7 +29,6 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
         const newValue = value + 1;
         if (newValue <= maxStock) {
             updateQuantity(product.id, newValue, maxStock);
-            setInputValue(newValue);
         } else {
             alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
         }
@@ -36,37 +39,24 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
         let cleanValue = rawValue.replace(/\D/g, '');
         
         if (cleanValue === '') {
-            cleanValue = '1';
+            updateQuantity(product.id, 1, maxStock);
+            return;
         }
         
         let newValue = parseInt(cleanValue, 10);
-        
-        if (isNaN(newValue)) {
-            newValue = 1;
-        }
-        
-        if (newValue < 1) {
-            newValue = 1;
-        }
+        if (isNaN(newValue)) newValue = 1;
+        if (newValue < 1) newValue = 1;
         
         if (newValue > maxStock && maxStock > 0) {
             alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
             newValue = maxStock;
         }
         
-        setInputValue(newValue);
         updateQuantity(product.id, newValue, maxStock);
-    };
-
-    const handleInputBlur = () => {
-        if (inputValue !== value) {
-            updateQuantity(product.id, inputValue, maxStock);
-        }
     };
 
     const handlePaste = (e) => {
         e.preventDefault();
-        return false;
     };
 
     const handleKeyDown = (e) => {
@@ -76,18 +66,12 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
             'Home', 'End'
         ];
         
-        if (allowedKeys.includes(e.key)) {
-            return;
-        }
-        
-        if (/^[0-9]$/.test(e.key)) {
-            return;
-        }
+        if (allowedKeys.includes(e.key)) return;
+        if (/^[0-9]$/.test(e.key)) return;
         
         e.preventDefault();
     };
 
-    // Запрещаем ввод Enter в поле
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -132,7 +116,6 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
                     className="stepper__input"
                     value={inputValue}
                     onChange={handleInputChange}
-                    onBlur={handleInputBlur}
                     onPaste={handlePaste}
                     onKeyDown={handleKeyDown}
                     onKeyPress={handleKeyPress}
