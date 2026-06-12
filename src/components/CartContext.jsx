@@ -1,22 +1,29 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";  
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-    const [cart, setCart] = useState([]);
+    
+    const [cart, setCart] = useState(() => {
+        const savedCart = localStorage.getItem('cart');
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
+
+    
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
 
     const removeFromCart = (id) => {
         setCart(prev => prev.filter(item => item.id !== id));
     };
 
     const addToCart = (product, quantity) => {
-        // Проверка наличия товара (используем stock)
         if (!product.stock || product.stock <= 0) {
             console.log("Товар отсутствует на складе");
             return;
         }
         
-        // Нельзя добавить больше, чем есть в наличии
         if (quantity > product.stock) {
             console.log(`Недостаточно товара. В наличии: ${product.stock} шт.`);
             return;
