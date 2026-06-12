@@ -85,14 +85,6 @@ export default function Cart() {
                                     <CartItem
                                         key={item.id}
                                         product={item}
-                                        img={item.images?.[0]?.url ? `${import.meta.env.VITE_API_URL}${item.images[0].url}` : ""}
-                                        name={`${item.model} ${item.name}`}
-                                        capacity={item.specs?.[0]?.value}
-                                        voltage={item.specs?.[2]?.value}
-                                        resistance={item.specs?.[1]?.value}
-                                        value={item.quantity}
-                                        price={item.price}
-                                        
                                     />
                                 ))}
                             </>
@@ -137,12 +129,10 @@ export default function Cart() {
                 </div>
             </div>
 
-            
             {showAuthModal && (
                 <AuthModal onClose={() => setShowAuthModal(false)} />
             )}
 
-            
             {showSuccess && (
                 <div className="cart__qr-overlay" onClick={() => setShowSuccess(false)}>
                     <div className="cart__qr-modal" onClick={(e) => e.stopPropagation()}>
