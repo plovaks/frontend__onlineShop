@@ -262,3 +262,54 @@
 .delete-btn:hover {
     transform: scale(1.1);
 }
+/* Кнопки действий с товаром */
+.product-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.edit-btn, .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-btn:hover {
+    background-color: rgba(85, 121, 246, 0.1);
+    transform: scale(1.05);
+}
+
+.delete-btn:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    transform: scale(1.05);
+}
+
+.product-event {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s;
+}
+
+.edit-btn:active .product-event,
+.delete-btn:active .product-event {
+    transform: scale(0.95);
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .product-event {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .product-actions {
+        gap: 8px;
+    }
+}

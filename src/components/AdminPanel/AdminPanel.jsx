@@ -383,8 +383,8 @@ export default function AdminPanel() {
                                     <h4>{product.name}</h4>
                                     <p>{product.model || '—'}</p>
                                     <p className="product-price">{product.price} ₽</p>
-                                    <p className={product.in_stock > 0 ? 'in-stock' : 'out-stock'}>
-                                        {product.in_stock > 0 ? `В наличии: ${product.in_stock} шт.` : 'Нет в наличии'}
+                                    <p className={product.stock > 0 ? 'in-stock' : 'out-stock'}>
+                                        {product.stock > 0 ? `В наличии: ${product.stock} шт.` : 'Нет в наличии'}
                                     </p>
                                 </div>
                                 <div className="product-actions">
@@ -396,13 +396,17 @@ export default function AdminPanel() {
                                             price: product.price,
                                             type: product.type || '',
                                             brand: product.brand || '',
-                                            in_stock: product.in_stock || 0
+                                            in_stock: product.stock || 0
                                         });
                                         setSpecs(product.specs || []);
                                         setImages(product.images || []);
                                         setShowProductForm(true);
-                                    }}>{editIcon}</button>
-                                    <button className="delete-btn" onClick={() => deleteProduct(product.id)}>{deleteIcon}</button>
+                                    }}>
+                                        <img src={editIcon} className='product-event' alt="edit" />
+                                    </button>
+                                    <button className="delete-btn" onClick={() => deleteProduct(product.id)}>
+                                        <img src={deleteIcon} className='product-event' alt="delete" />
+                                    </button>
                                 </div>
                             </div>
                         ))}
