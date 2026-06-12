@@ -57,9 +57,7 @@ export default function CatalogItem({
 
         <p className="item__price">{Math.round(price)} ₽</p>
 
-        <p className="item__stock">
-          {stock > 0 ? `В наличии: ${stock} шт.` : 'Нет в наличии'}
-        </p>
+        
 
         {!stock || stock <= 0 ? (
           <button className="item__cart--btn disabled" disabled>
