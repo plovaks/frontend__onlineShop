@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../AuthContext';
 import './AdminPanel.css';
 
+const SERVER_URL = 'https://power-store-plovaks.amvera.io';
+
 export default function AdminPanel() {
     const { token } = useAuth();
     const [users, setUsers] = useState([]);
@@ -20,12 +22,18 @@ export default function AdminPanel() {
         price: '',
         type: '',
         brand: '',
-        in_stock: true
+        in_stock: 0
     });
     const [specs, setSpecs] = useState([]);
     const [newSpec, setNewSpec] = useState({ name: '', value: '', unit: '' });
     const [images, setImages] = useState([]);
     const [newImageUrl, setNewImageUrl] = useState('');
+
+    const getImageUrl = (url) => {
+        if (!url) return '';
+        if (url.startsWith('http')) return url;
+        return `${SERVER_URL}${url}`;
+    };
 
     useEffect(() => {
         if (activeTab === 'users') {
@@ -133,6 +141,7 @@ export default function AdminPanel() {
                 body: JSON.stringify({
                     ...productForm,
                     price: parseFloat(productForm.price),
+                    in_stock: parseInt(productForm.in_stock) || 0,
                     specs,
                     images
                 })
@@ -141,7 +150,7 @@ export default function AdminPanel() {
                 setMessage(editingProduct ? 'Товар обновлён' : 'Товар добавлен');
                 setShowProductForm(false);
                 setEditingProduct(null);
-                setProductForm({ name: '', model: '', price: '', type: '', brand: '', in_stock: true });
+                setProductForm({ name: '', model: '', price: '', type: '', brand: '', in_stock: 0 });
                 setSpecs([]);
                 setImages([]);
                 fetchProducts();
@@ -285,7 +294,7 @@ export default function AdminPanel() {
                 <div className="admin-products">
                     <button className="admin-add-btn" onClick={() => {
                         setEditingProduct(null);
-                        setProductForm({ name: '', model: '', price: '', type: '', brand: '', in_stock: true });
+                        setProductForm({ name: '', model: '', price: '', type: '', brand: '', in_stock: 0 });
                         setSpecs([]);
                         setImages([]);
                         setShowProductForm(true);
@@ -305,10 +314,13 @@ export default function AdminPanel() {
                                 <div className="form-row">
                                     <input type="text" placeholder="Тип" value={productForm.type} onChange={e => setProductForm({...productForm, type: e.target.value})} />
                                     <input type="text" placeholder="Бренд" value={productForm.brand} onChange={e => setProductForm({...productForm, brand: e.target.value})} />
-                                    <label>
-                                        <input type="checkbox" checked={productForm.in_stock} onChange={e => setProductForm({...productForm, in_stock: e.target.checked})} />
-                                        В наличии
-                                    </label>
+                                    <input 
+                                        type="number" 
+                                        placeholder="Количество на складе" 
+                                        value={productForm.in_stock} 
+                                        onChange={e => setProductForm({...productForm, in_stock: parseInt(e.target.value) || 0})} 
+                                        min="0"
+                                    />
                                 </div>
                                 
                                 <h4>Характеристики</h4>
@@ -331,7 +343,11 @@ export default function AdminPanel() {
                                 <div className="images-section">
                                     {images.map((img, i) => (
                                         <div key={i} className="image-item">
-                                            <img src={img.url} alt={`product ${i}`} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                                            <img 
+                                                src={getImageUrl(img.url)} 
+                                                alt={`product ${i}`} 
+                                                style={{ width: '50px', height: '50px', objectFit: 'cover' }} 
+                                            />
                                             <button type="button" onClick={() => removeImage(i)}>✕</button>
                                         </div>
                                     ))}
@@ -353,14 +369,20 @@ export default function AdminPanel() {
                         {products.map(product => (
                             <div key={product.id} className="admin-product-card">
                                 <div className="product-image">
-                                    {product.images?.[0] && <img src={product.images[0].url} alt={product.name} />}
+                                    {product.images?.[0] && (
+                                        <img 
+                                            src={getImageUrl(product.images[0].url)} 
+                                            alt={product.name} 
+                                            style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+                                        />
+                                    )}
                                 </div>
                                 <div className="product-info">
                                     <h4>{product.name}</h4>
                                     <p>{product.model || '—'}</p>
                                     <p className="product-price">{product.price} ₽</p>
-                                    <p className={product.in_stock ? 'in-stock' : 'out-stock'}>
-                                        {product.in_stock ? 'В наличии' : 'Нет в наличии'}
+                                    <p className={product.in_stock > 0 ? 'in-stock' : 'out-stock'}>
+                                        {product.in_stock > 0 ? `В наличии: ${product.in_stock} шт.` : 'Нет в наличии'}
                                     </p>
                                 </div>
                                 <div className="product-actions">
@@ -372,7 +394,7 @@ export default function AdminPanel() {
                                             price: product.price,
                                             type: product.type || '',
                                             brand: product.brand || '',
-                                            in_stock: product.in_stock
+                                            in_stock: product.in_stock || 0
                                         });
                                         setSpecs(product.specs || []);
                                         setImages(product.images || []);

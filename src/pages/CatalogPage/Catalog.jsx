@@ -154,7 +154,8 @@ export default function Catalog() {
                                         capcity={item.specs.find(s => s.name === "Емкость")?.value} 
                                         voltage={item.specs.find(s => s.name === "Напряжение")?.value} 
                                         resistance={item.specs.find(s => s.name === "Внутреннее сопротивление")?.value} 
-                                        price={item.price} 
+                                        price={item.price}
+                                        in_stock={item.in_stock}   
                                     />
                                 </Link>
                             ))

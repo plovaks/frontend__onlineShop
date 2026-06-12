@@ -11,13 +11,21 @@ export default function CatalogItem({
   voltage,
   resistance,
   price,
+  in_stock,  // ← добавить пропс
 }) {
   
-const { addToCart, cart } = useCart();
-const isInCart = cart.some(item => item.id === id);
+  const { addToCart, cart } = useCart();
+  const isInCart = cart.some(item => item.id === id);
+  
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // Не даём добавить, если товара нет в наличии
+    if (!in_stock || in_stock <= 0) {
+      console.log("Товар отсутствует на складе");
+      return;
+    }
 
     const productToAdd = {
         id,
@@ -27,12 +35,12 @@ const isInCart = cart.some(item => item.id === id);
         capacity: capcity,    
         voltage: voltage,      
         resistance: resistance,
+        in_stock: in_stock
     };
     
-    console.log("Добавляем товар:", productToAdd); // 
-    
+    console.log("Добавляем товар:", productToAdd);
     addToCart(productToAdd, 1);
-};
+  };
 
   return (
     <>
@@ -50,20 +58,26 @@ const isInCart = cart.some(item => item.id === id);
 
         <p className="item__price">{Math.round(price)} ₽</p>
 
-        {
-          isInCart ? (
-            <div className="item__added">
-              В корзине
-            </div>
-          ) : (
-            <button
-              className="item__cart--btn"
-              onClick={handleAddToCart}
-            >
-              <img src={cartIcon} alt="cart" />
-            </button>
-          )
-        }
+        <p className="item__stock">
+          {in_stock > 0 ? `В наличии: ${in_stock} шт.` : 'Нет в наличии'}
+        </p>
+
+        {!in_stock || in_stock <= 0 ? (
+          <button className="item__cart--btn disabled" disabled>
+            Нет в наличии
+          </button>
+        ) : isInCart ? (
+          <div className="item__added">
+            В корзине
+          </div>
+        ) : (
+          <button
+            className="item__cart--btn"
+            onClick={handleAddToCart}
+          >
+            <img src={cartIcon} alt="cart" />
+          </button>
+        )}
       </div>
 
       {/* Мобильная карточка */}
@@ -78,6 +92,9 @@ const isInCart = cart.some(item => item.id === id);
               <p>Емкость: {capcity} мАч</p>
               <p>Напряжение: {voltage} В</p>
               <p>Сопротивление: {resistance} мОм</p>
+              <p className={in_stock > 0 ? 'in-stock' : 'out-stock'}>
+                {in_stock > 0 ? `В наличии: ${in_stock} шт.` : 'Нет в наличии'}
+              </p>
             </div>
           </div>
         </div>
@@ -87,20 +104,22 @@ const isInCart = cart.some(item => item.id === id);
             {Math.round(price)} ₽
           </p>
 
-          {
-            isInCart ? (
-              <div className="item__added">
-                В корзине
-              </div>
-            ) : (
-              <button
-                className="item__cart--btn"
-                onClick={handleAddToCart}
-              >
-                <img src={cartIcon} alt="" />
-              </button>
-            )
-          }
+          {!in_stock || in_stock <= 0 ? (
+            <button className="item__cart--btn disabled" disabled>
+              Нет в наличии
+            </button>
+          ) : isInCart ? (
+            <div className="item__added">
+              В корзине
+            </div>
+          ) : (
+            <button
+              className="item__cart--btn"
+              onClick={handleAddToCart}
+            >
+              <img src={cartIcon} alt="" />
+            </button>
+          )}
         </div>
       </div>
     </>
