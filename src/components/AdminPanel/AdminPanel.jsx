@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../AuthContext';
 import './AdminPanel.css';
+import editIcon from "../../assets/icons/edit.svg"
+import deleteIcon from "../../assets/icons/delete.svg"
 
 const SERVER_URL = 'https://power-store-plovaks.amvera.io';
 
@@ -399,8 +401,8 @@ export default function AdminPanel() {
                                         setSpecs(product.specs || []);
                                         setImages(product.images || []);
                                         setShowProductForm(true);
-                                    }}>редактировать</button>
-                                    <button className="delete-btn" onClick={() => deleteProduct(product.id)}>удалить</button>
+                                    }}>{editIcon}</button>
+                                    <button className="delete-btn" onClick={() => deleteProduct(product.id)}>{deleteIcon}</button>
                                 </div>
                             </div>
                         ))}
