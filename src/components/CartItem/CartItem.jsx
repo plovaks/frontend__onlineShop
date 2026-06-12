@@ -1,100 +1,158 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCart } from "../CartContext";
+import bin from "../../assets/icons/bin.svg";
+import plusIcon from "../../assets/icons/plus.svg";
+import minusIcon from "../../assets/icons/minus.svg";
+import rubleBlue from "../../assets/icons/rubleBlue.svg";
 import "./CartItem.css";
-import deleteIcon from "../../assets/icons/delete.svg";
 
-export default function CartItem({ product }) {
-    const { updateQuantity, removeFromCart } = useCart();
-    
-    const handleDecrease = () => {
-        const newQuantity = product.quantity - 1;
-        if (newQuantity >= 1) {
-            updateQuantity(product.id, newQuantity, product.stock);
+export default function CartItem({ product, img, name, capacity, voltage, resistance, value, price }) {
+    console.log("CartItem получил product:", product);
+    const { addToCart, removeFromCart } = useCart();
+    const [inputValue, setInputValue] = useState(value);
+    const maxStock = product.stock || 0;
+
+    const handleMinus = () => {
+        if (value > 1) {
+            const newValue = value - 1;
+            addToCart(product, newValue);
+            setInputValue(newValue);
         } else {
             removeFromCart(product.id);
         }
     };
-    
-    const handleIncrease = () => {
-        const newQuantity = product.quantity + 1;
-        if (newQuantity <= product.stock) {
-            updateQuantity(product.id, newQuantity, product.stock);
-        } else {
-            alert(`Недостаточно товара. В наличии: ${product.stock} шт.`);
+
+    const handlePlus = () => {
+    const newValue = value + 1;
+    if (newValue <= maxStock) {
+        addToCart(product, newValue);
+        setInputValue(newValue);
+    } else {
+        alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
+    }
+};
+
+    const handleInputChange = (e) => {
+        // Получаем введенное значение
+        let rawValue = e.target.value;
+        
+        // Удаляем всё, кроме цифр (оставляем только 0-9)
+        let cleanValue = rawValue.replace(/\D/g, '');
+        
+        // Если после очистки пустая строка - ставим 1
+        if (cleanValue === '') {
+            cleanValue = '1';
+        }
+        
+        // Преобразуем в число
+        let newValue = parseInt(cleanValue, 10);
+        
+        // Проверка на NaN (на всякий случай)
+        if (isNaN(newValue)) {
+            newValue = 1;
+        }
+        
+        // Ограничиваем минимальное значение
+        if (newValue < 1) {
+            newValue = 1;
+        }
+        
+        // Опционально: максимальное значение (например, 999)
+        if (newValue > maxStock && maxStock > 0) {
+            alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
+            newValue = maxStock;
+        }
+        
+        setInputValue(newValue);
+        addToCart(product, newValue);
+    };
+
+    const handleInputBlur = () => {
+        if (inputValue !== value) {
+            addToCart(product, inputValue);
         }
     };
-    
-    const handleRemove = () => {
-        removeFromCart(product.id);
+
+    // Запрещаем вставку текста
+    const handlePaste = (e) => {
+        e.preventDefault();
+        return false;
     };
-    
-    const handleQuantityChange = (e) => {
-        let newQuantity = parseInt(e.target.value);
-        if (isNaN(newQuantity)) newQuantity = 1;
-        if (newQuantity < 1) {
-            removeFromCart(product.id);
-        } else if (newQuantity <= product.stock) {
-            updateQuantity(product.id, newQuantity, product.stock);
-        } else {
-            alert(`Недостаточно товара. В наличии: ${product.stock} шт.`);
+
+    // Запрещаем ввод нецифровых символов с клавиатуры
+    const handleKeyDown = (e) => {
+        // Разрешаем клавиши управления
+        const allowedKeys = [
+            'Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 
+            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 
+            'Home', 'End'
+        ];
+        
+        if (allowedKeys.includes(e.key)) {
+            return;
         }
+        
+        // Разрешаем цифры
+        if (/^[0-9]$/.test(e.key)) {
+            return;
+        }
+        
+        
+        e.preventDefault();
     };
-    
-    const itemTotal = product.price * product.quantity;
-    
+
     return (
-        <div className="cart-item">
-            <div className="cart-item__info">
-                <img 
-                    src={product.images?.[0]?.url ? `${import.meta.env.VITE_API_URL}${product.images[0].url}` : product.img} 
-                    alt={product.name} 
-                    className="cart-item__img"
-                />
-                <div className="cart-item__details">
-                    <p className="cart-item__name">{product.name}</p>
-                    <p className="cart-item__specs">
-                        {product.capacity && `Емкость: ${product.capacity} мАч`}
-                        {product.voltage && ` | Напряжение: ${product.voltage} В`}
-                        {product.resistance && ` | Сопротивление: ${product.resistance} мОм`}
-                    </p>
-                    <p className="cart-item__stock">
-                        {product.stock > 0 ? `В наличии: ${product.stock} шт.` : 'Нет в наличии'}
-                    </p>
-                </div>
+        <div className="cartItem">
+            <img 
+                src={product.img} 
+                alt={name} 
+                className="cart__image"
+                draggable={false}
+                onDragStart={(e) => e.preventDefault()}
+            />
+            <div className="cartItem__info">
+                <h4 className="cartItem__title">{product.name}</h4>
+                <p className="cartItem__desc">
+                    <span>{product.capacity} мАч, </span>
+                    <span>{product.voltage} В, </span>
+                    <span>{product.resistance} мОм</span>
+                </p>
             </div>
-            
-            <div className="cart-item__controls">
-                <div className="cart-item__quantity">
-                    <button 
-                        className="cart-item__qty-btn" 
-                        onClick={handleDecrease}
-                        disabled={product.quantity <= 1}
-                    >
-                        -
-                    </button>
-                    <input
-                        type="number"
-                        className="cart-item__qty-input"
-                        value={product.quantity}
-                        onChange={handleQuantityChange}
-                        min="1"
-                        max={product.stock}
-                    />
-                    <button 
-                        className="cart-item__qty-btn" 
-                        onClick={handleIncrease}
-                        disabled={product.quantity >= product.stock}
-                    >
-                        +
-                    </button>
-                </div>
+           
+            <div className="cartItem__stepper">
+                <button className="cartItem__btn--minus" onClick={handleMinus} disabled={value <= 1}>
+                    <img src={minusIcon} alt="minus" />
+                </button>
                 
-                <p className="cart-item__price">{itemTotal} ₽</p>
+                <input 
+                    type="text" 
+                    className="stepper__input"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onBlur={handleInputBlur}
+                    onPaste={handlePaste}
+                    onKeyDown={handleKeyDown}
+                    inputMode="numeric"
+                    pattern="\d*"
+                    placeholder="1"
+                />
                 
-                <button className="cart-item__delete" onClick={handleRemove}>
-                    <img src={deleteIcon} alt="Удалить" />
+                <button className="cartItem__btn--plus" onClick={handlePlus} disabled={value >= maxStock && maxStock > 0}>
+                    <img src={plusIcon} alt="plus" />
                 </button>
             </div>
+            
+            <p className="cartItem__price">
+                {price * value} 
+                <img src={rubleBlue} alt="ruble icon" />
+            </p>
+            
+            <button 
+                className="cartItem__bin-btn" 
+                onClick={() => removeFromCart(product.id)}
+            >
+                <img src={bin} alt="bin icon" />
+            </button>
         </div>
     );
 }

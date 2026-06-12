@@ -12,6 +12,7 @@ export default function AddToCart({ product, price, salePrice }) {
     
     const [isAdded, setIsAdded] = useState(!!inCart);
     const [count, setCount] = useState(inCart ? inCart.quantity : 1);
+    const maxStock = product.stock || 0;
 
     useEffect(() => {
         if (inCart) {
@@ -29,10 +30,14 @@ export default function AddToCart({ product, price, salePrice }) {
     };
 
     const updateCount = (newCount) => {
-        const val = Math.max(1, Number(newCount));
+        let val = Math.max(1, Number(newCount));
+        if (val > maxStock && maxStock > 0) {
+            alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
+            val = maxStock;
+        }
         setCount(val);
         if (isAdded) {
-            addToCart(product, val); 
+            addToCart(product, val);
         }
     };
 
@@ -60,7 +65,7 @@ export default function AddToCart({ product, price, salePrice }) {
                     {price} <img src={ruble} alt="ruble" />
                 </p>
                 <p className="purchase__sales">{salePrice}р/шт при покупке от 100шт</p>
-                <button className="btn purchase__addToCart" onClick={handleAddClick}>
+                <button className="btn purchase__addToCart" onClick={handleAddClick} disabled={count >= maxStock && maxStock > 0}>
                     Добавить в корзину
                 </button>
             </div>
