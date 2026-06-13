@@ -22,7 +22,7 @@ export default function BatteryPage({ isModal }) {
                 const data = await response.json();
                 setProduct(data);
                 if (data.images?.length > 0) {
-                    setActiveImg(`${SERVER_URL}${data.images[0].url}`);
+                    setActiveImg(data.images[0].url);
                 }
             } catch (error) {
                 console.error("Ошибка загрузки товара:", error);
@@ -94,7 +94,7 @@ const handleClose = () => {
                                 {product.images?.map((img, index) => (
                                     <img 
                                         key={index}
-                                        src={`${SERVER_URL}${img.url}`} 
+                                         src={img.url} 
                                         alt="extra" 
                                         className={`battery__optionalImg ${activeImg === `${SERVER_URL}${img.url}` ? 'active-thumb' : ''}`}
                                         onClick={() => setActiveImg(`${SERVER_URL}${img.url}`)}

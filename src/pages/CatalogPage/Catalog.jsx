@@ -149,7 +149,7 @@ export default function Catalog() {
                                 <Link to={`/product/${item.id}`} key={item.id} state={{ background: location }}>
                                     <CatalogItem 
                                         id={item.id}
-                                        img={item.images?.length > 0 ? `${SERVER_URL}${item.images[0].url}` : ''} 
+                                        img src={item.images?.length > 0 ? item.images[0].url : ''}
                                         name={`${item.model} ${item.name}`} 
                                         capcity={item.specs.find(s => s.name === "Емкость")?.value} 
                                         voltage={item.specs.find(s => s.name === "Напряжение")?.value} 
