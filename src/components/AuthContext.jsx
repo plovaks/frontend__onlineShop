@@ -2,92 +2,94 @@ import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-// Проверка, истёк ли токен
-function isTokenExpired(token) {
-    if (!token) return true;
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.exp * 1000 < Date.now();
-    } catch {
-        return true;
-    }
-}
-
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // Проверка авторизации при загрузке
     useEffect(() => {
-        const hasConsent = localStorage.getItem('privacyConsent');
-        if (!hasConsent) {
-            setLoading(false);
-            return;
-        }
-
-        const savedUser = localStorage.getItem('user');
-        const savedToken = localStorage.getItem('token');
-        const refreshToken = localStorage.getItem('refreshToken');
-
-        // Если есть сохранённый access token и он не истёк — используем сразу
-        if (savedUser && savedToken && !isTokenExpired(savedToken)) {
-            setUser(JSON.parse(savedUser));
-            setToken(savedToken);
-            setLoading(false);
-            return;
-        }
-
-        // Если access token истёк или отсутствует, но есть refresh — обновляем
-        if (savedUser && refreshToken) {
-            fetch(`${import.meta.env.VITE_API_URL}/api/auth/refresh`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ refreshToken })
-            })
-                .then(res => {
-                    if (!res.ok) throw new Error('Refresh failed');
-                    return res.json();
-                })
-                .then(data => {
-                    if (data.token) {
-                        setUser(JSON.parse(savedUser));
-                        setToken(data.token);
-                        localStorage.setItem('token', data.token);
-                    } else {
-                        throw new Error('No token in response');
-                    }
-                })
-                .catch(() => {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('refreshToken');
+        const checkAuth = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customer/me`, {
+                    credentials: 'include'  // ← куки отправляются автоматически
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    setUser(data);
+                } else {
                     setUser(null);
-                    setToken(null);
-                })
-                .finally(() => setLoading(false));
-        } else {
-            setLoading(false);
-        }
+                }
+            } catch (err) {
+                console.error('Ошибка проверки авторизации:', err);
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        checkAuth();
     }, []);
 
-    function login(userData, accessToken, refreshToken) {
-        setUser(userData);
-        setToken(accessToken);
-        localStorage.setItem('user', JSON.stringify(userData));
-        localStorage.setItem('token', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+    async function login(email, password) {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ email, password })
+            });
+            
+            if (res.ok) {
+                const data = await res.json();
+                setUser(data.customer);
+                return { success: true };
+            } else {
+                const error = await res.json();
+                return { success: false, error: error.error };
+            }
+        } catch (err) {
+            return { success: false, error: 'Ошибка соединения' };
+        }
     }
 
-    function logout() {
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
+    async function register(full_name, email, password) {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ full_name, email, password })
+            });
+            
+            if (res.ok) {
+                const data = await res.json();
+                setUser(data.customer);
+                return { success: true };
+            } else {
+                const error = await res.json();
+                return { success: false, error: error.error };
+            }
+        } catch (err) {
+            return { success: false, error: 'Ошибка соединения' };
+        }
+    }
+
+    async function logout() {
+        try {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+        } catch (err) {
+            console.error('Ошибка при выходе:', err);
+        } finally {
+            setUser(null);
+        }
     }
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, register, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

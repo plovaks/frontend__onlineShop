@@ -1,33 +1,30 @@
 import { useState } from "react"
 import { useAuth } from "../AuthContext";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import './AuthModal.css'
 
-export default function AuthModal({onClose}){
+export default function AuthModal({ onClose }) {
     const [isActive, setIsActive] = useState('login');
-    const {login} = useAuth();
+    const { login, register } = useAuth(); // ← добавили register
     const [fullName, setFullName] = useState('');
     const [pswd, setPswd] = useState('');
-    const [confirmPswd, setConfirmPswd] = useState(''); // Добавляем подтверждение пароля
+    const [confirmPswd, setConfirmPswd] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
-    
 
-    // Функция валидации email (проверяет формат, но не существование)
     const isValidEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
 
-    // Функция валидации ФИО (только буквы, пробелы и дефисы)
     const isValidFullName = (name) => {
         const nameRegex = /^[A-Za-zА-Яа-я\s\-]{2,50}$/;
         return nameRegex.test(name.trim());
     };
 
-    // Функция валидации пароля (минимум 6 символов, хотя бы одна цифра и буква)
     const isValidPassword = (password) => {
         return password.length >= 6;
     };
@@ -35,118 +32,105 @@ export default function AuthModal({onClose}){
     const handleActiveAction = (tab) => {
         setIsActive(tab);
         setError('');
-        // Очищаем поля при переключении
         setFullName('');
         setEmail('');
         setPswd('');
         setConfirmPswd('');
     }
 
-    function handleRegisterSubmit(e) {
+    async function handleRegisterSubmit(e) {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
-        // Валидация ФИО
         if (!fullName.trim()) {
             setError('Введите ваше ФИО');
+            setLoading(false);
             return;
         }
         if (!isValidFullName(fullName)) {
             setError('ФИО должно содержать только буквы, пробелы и дефисы (2-50 символов)');
+            setLoading(false);
             return;
         }
-
-        // Валидация email
         if (!email.trim()) {
             setError('Введите email');
+            setLoading(false);
             return;
         }
         if (!isValidEmail(email)) {
             setError('Введите корректный email');
+            setLoading(false);
             return;
         }
-
-        // Валидация пароля
         if (!pswd) {
             setError('Введите пароль');
+            setLoading(false);
             return;
         }
         if (!isValidPassword(pswd)) {
             setError('Пароль должен содержать минимум 6 символов');
+            setLoading(false);
             return;
         }
-
-        // Проверка совпадения паролей
         if (pswd !== confirmPswd) {
             setError('Пароли не совпадают');
+            setLoading(false);
             return;
         }
 
-        const registerUser = async () => {
-            try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ full_name: fullName.trim(), email, password: pswd })
-                })
-                const data = await res.json();
-                if (!res.ok) {
-                    setError(data.error);
-                    return;
-                }
-                login(data.customer, data.token, data.refreshToken);
+        try {
+            const result = await register(fullName.trim(), email, pswd);
+            if (result.success) {
                 onClose();
                 navigate('/profile');
-            } catch (err) {
-                setError('Ошибка соединения с сервером');
+            } else {
+                setError(result.error);
             }
+        } catch (err) {
+            setError('Ошибка соединения с сервером');
+        } finally {
+            setLoading(false);
         }
-        registerUser();
     }
 
-    function handleLoginSubmit(e) {
+    async function handleLoginSubmit(e) {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
-        // Валидация email
         if (!email.trim()) {
             setError('Введите email');
+            setLoading(false);
             return;
         }
         if (!isValidEmail(email)) {
             setError('Введите корректный email');
+            setLoading(false);
             return;
         }
-
-        // Валидация пароля
         if (!pswd) {
             setError('Введите пароль');
+            setLoading(false);
             return;
         }
 
-        const loginUser = async () => {
-            try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password: pswd })
-                })
-                const data = await res.json();
-                if (!res.ok) {
-                    setError(data.error);
-                    return;
-                }
-                login(data.customer, data.token, data.refreshToken);
+        try {
+            const result = await login(email, pswd);
+            if (result.success) {
                 onClose();
-                navigate('/profile')
-            } catch (err) {
-                setError('Ошибка соединения с сервером');
+                navigate('/profile');
+            } else {
+                setError(result.error);
             }
+        } catch (err) {
+            setError('Ошибка соединения с сервером');
+        } finally {
+            setLoading(false);
         }
-        loginUser();
     }
 
-    return(
+    return (
         <div className="modal__overlay" onClick={onClose}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
                 <h2>{isActive === 'login' ? 'Вход' : 'Регистрация'}</h2>
@@ -200,7 +184,9 @@ export default function AuthModal({onClose}){
                                     autoComplete="new-password"
                                 />
                             </label>
-                            <button type="submit">Зарегистрироваться</button>
+                            <button type="submit" disabled={loading}>
+                                {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+                            </button>
                         </form>
                         <div className="modal__switch">Уже есть аккаунт?
                             <button type="button" onClick={() => handleActiveAction('login')}>Войти</button>
@@ -233,7 +219,9 @@ export default function AuthModal({onClose}){
                                     autoComplete="current-password"
                                 />
                             </label>
-                            <button type="submit">Войти в аккаунт</button>
+                            <button type="submit" disabled={loading}>
+                                {loading ? 'Вход...' : 'Войти в аккаунт'}
+                            </button>
                         </form>
                         <div className="modal__switch">Нет аккаунта?
                             <button type="button" onClick={() => handleActiveAction('register')}>Зарегистрироваться</button>
