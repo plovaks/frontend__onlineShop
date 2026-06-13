@@ -44,6 +44,7 @@ export default function Cart() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
+                credentials: 'include',
                 body: JSON.stringify({ items, total_amount: totalPrice })
             });
 

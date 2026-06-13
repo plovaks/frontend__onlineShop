@@ -24,8 +24,8 @@ export default function ProfilePage() {
         if (!token) return
         const fetchOrders = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customer/orders`, {
-                    headers: { Authorization: `Bearer ${token}` }
+                 const res = await fetch(`${import.meta.env.VITE_API_URL}/api/customer/orders`, {
+                    credentials: 'include' 
                 })
                 const data = await res.json();
                 console.log('Ответ сервера:', data);

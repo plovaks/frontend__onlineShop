@@ -7,7 +7,7 @@ import deleteIcon from "../../assets/icons/delete.svg"
 const SERVER_URL = 'https://power-store-plovaks.amvera.io';
 
 export default function AdminPanel() {
-    const { token } = useAuth();
+    const { user } = useAuth(); // ← убрали token, оставили user (или можно просто useAuth())
     const [users, setUsers] = useState([]);
     const [orders, setOrders] = useState([]);
     const [products, setProducts] = useState([]);
@@ -51,11 +51,13 @@ export default function AdminPanel() {
         setLoading(true);
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
-                headers: { Authorization: `Bearer ${token}` }
+                credentials: 'include'  // ← вместо заголовка Authorization
             });
             if (res.ok) {
                 const data = await res.json();
                 setUsers(data);
+            } else if (res.status === 401 || res.status === 403) {
+                setMessage('Нет доступа. Требуются права администратора.');
             } else {
                 setMessage('Ошибка загрузки пользователей');
             }
@@ -70,11 +72,13 @@ export default function AdminPanel() {
         setLoading(true);
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/orders`, {
-                headers: { Authorization: `Bearer ${token}` }
+                credentials: 'include'
             });
             if (res.ok) {
                 const data = await res.json();
                 setOrders(data);
+            } else if (res.status === 401 || res.status === 403) {
+                setMessage('Нет доступа. Требуются права администратора.');
             } else {
                 setMessage('Ошибка загрузки заказов');
             }
@@ -89,11 +93,13 @@ export default function AdminPanel() {
         setLoading(true);
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products`, {
-                headers: { Authorization: `Bearer ${token}` }
+                credentials: 'include'
             });
             if (res.ok) {
                 const data = await res.json();
                 setProducts(data);
+            } else if (res.status === 401 || res.status === 403) {
+                setMessage('Нет доступа. Требуются права администратора.');
             } else {
                 setMessage('Ошибка загрузки товаров');
             }
@@ -108,10 +114,8 @@ export default function AdminPanel() {
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users/${userId}/toggle-admin`, {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ is_admin: !currentIsAdmin })
             });
             if (res.ok) {
@@ -136,10 +140,8 @@ export default function AdminPanel() {
         try {
             const res = await fetch(url, {
                 method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({
                     ...productForm,
                     price: parseFloat(productForm.price),
@@ -170,7 +172,7 @@ export default function AdminPanel() {
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products/${productId}`, {
                 method: 'DELETE',
-                headers: { Authorization: `Bearer ${token}` }
+                credentials: 'include'
             });
             if (res.ok) {
                 setMessage('Товар удалён');
