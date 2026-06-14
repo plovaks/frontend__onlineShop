@@ -3,11 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import './BatteryPage.css'
 import AddToCart from "../../components/AddToCart/AddToCart";
 
+const SERVER_URL = 'https://power-store-plovaks.amvera.io';
+
 export default function BatteryPage({ isModal }) {
     const { id } = useParams(); 
     const [product, setProduct] = useState(null);
     const [activeImg, setActiveImg] = useState("");
-    const SERVER_URL = 'https://power-store-plovaks.amvera.io';
     const navigate = useNavigate();
 
     const imgArrRef = useRef(null);
@@ -22,7 +23,7 @@ export default function BatteryPage({ isModal }) {
                 const data = await response.json();
                 setProduct(data);
                 if (data.images?.length > 0) {
-                    setActiveImg(data.images[0].url);
+                    setActiveImg(`${SERVER_URL}${data.images[0].url}`);
                 }
             } catch (error) {
                 console.error("Ошибка загрузки товара:", error);
@@ -60,15 +61,15 @@ export default function BatteryPage({ isModal }) {
         imgArrRef.current?.scrollBy({ left: dir * 80, behavior: 'smooth' });
     };
 
-const handleClose = () => {
-  navigate(-1);
-};
+    const handleClose = () => {
+        navigate(-1);
+    };
 
-   const handleOverlayClick = (e) => {
-  if (e.target.classList.contains('battery__modal-overlay')) {
-    handleClose();
-  }
-};
+    const handleOverlayClick = (e) => {
+        if (e.target.classList.contains('battery__modal-overlay')) {
+            handleClose();
+        }
+    };
 
     if (!product) {
         return <div className="loading">Загрузка данных...</div>;
@@ -94,7 +95,7 @@ const handleClose = () => {
                                 {product.images?.map((img, index) => (
                                     <img 
                                         key={index}
-                                         src={img.url} 
+                                        src={`${SERVER_URL}${img.url}`}
                                         alt="extra" 
                                         className={`battery__optionalImg ${activeImg === `${SERVER_URL}${img.url}` ? 'active-thumb' : ''}`}
                                         onClick={() => setActiveImg(`${SERVER_URL}${img.url}`)}
@@ -124,7 +125,6 @@ const handleClose = () => {
                     <AddToCart
                         product={product} 
                         price={Math.trunc(product.price)}
-                        // salePrice={Math.trunc(product.price) - 10} 
                     />
                 </div>
             </div>

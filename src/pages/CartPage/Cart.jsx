@@ -8,9 +8,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import "./Cart.css";
 
+const SERVER_URL = 'https://power-store-plovaks.amvera.io';
+
 export default function Cart() {
     const { cart, clearCart } = useCart();
-    const { user, token } = useAuth();
+    const { user } = useAuth();
     const navigate = useNavigate();
 
     const [showAuthModal, setShowAuthModal] = useState(false);
@@ -41,8 +43,7 @@ export default function Cart() {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
                 credentials: 'include',
                 body: JSON.stringify({ items, total_amount: totalPrice })
@@ -86,14 +87,13 @@ export default function Cart() {
                                     <CartItem
                                         key={item.id}
                                         product={item}
-                                        img={item.images?.[0]?.url ? item.images[0].url : ""}
+                                        img={item.images?.[0]?.url ? `${SERVER_URL}${item.images[0].url}` : ""}
                                         name={`${item.model} ${item.name}`}
                                         capacity={item.specs?.[0]?.value}
                                         voltage={item.specs?.[2]?.value}
                                         resistance={item.specs?.[1]?.value}
                                         value={item.quantity}
                                         price={item.price}
-                                        
                                     />
                                 ))}
                             </>
@@ -138,12 +138,10 @@ export default function Cart() {
                 </div>
             </div>
 
-            
             {showAuthModal && (
                 <AuthModal onClose={() => setShowAuthModal(false)} />
             )}
 
-            
             {showSuccess && (
                 <div className="cart__qr-overlay" onClick={() => setShowSuccess(false)}>
                     <div className="cart__qr-modal" onClick={(e) => e.stopPropagation()}>

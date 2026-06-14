@@ -69,7 +69,6 @@ export default function Catalog() {
         });
     });
 
-    // Подсчет активных фильтров
     const activeFiltersCount = Object.values(selectedFilters).flat().length;
 
     const filters = [
@@ -149,7 +148,7 @@ export default function Catalog() {
                                 <Link to={`/product/${item.id}`} key={item.id} state={{ background: location }}>
                                     <CatalogItem 
                                         id={item.id}
-                                        img src={item.images?.length > 0 ? item.images[0].url : ''}
+                                        img={item.images?.length > 0 ? `${SERVER_URL}${item.images[0].url}` : ''}
                                         name={`${item.model} ${item.name}`} 
                                         capcity={item.specs.find(s => s.name === "Емкость")?.value} 
                                         voltage={item.specs.find(s => s.name === "Напряжение")?.value} 
@@ -162,7 +161,6 @@ export default function Catalog() {
                         ) : (
                             <div className="catalog__empty">
                                 <div className="empty-state">
-                                    
                                     <h3>Товаров не найдено</h3>
                                     <p>По вашим критериям фильтрации ничего не найдено</p>
                                     {activeFiltersCount > 0 && (
