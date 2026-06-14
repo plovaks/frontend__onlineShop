@@ -82,7 +82,7 @@ export default function CartItem({ product, img, name, capacity, voltage, resist
     return (
         <div className="cartItem">
             <img 
-                src={product.img || img} 
+                src={img || product.img || ''}  
                 alt={name} 
                 className="cart__image"
                 draggable={false}
