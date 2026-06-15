@@ -22,7 +22,7 @@ export default function AdminPanel() {
         name: '',
         model: '',
         price: '',
-        type: '',
+        type_size: '',
         brand: '',
         in_stock: 0
     });
@@ -316,7 +316,7 @@ export default function AdminPanel() {
                                     <input type="number" placeholder="Цена *" value={productForm.price} onChange={e => setProductForm({...productForm, price: e.target.value})} required />
                                 </div>
                                 <div className="form-row">
-                                    <input type="text" placeholder="Тип" value={productForm.type} onChange={e => setProductForm({...productForm, type: e.target.value})} />
+                                    <input type="text" placeholder="Тип" value={productForm.type_size} onChange={e => setProductForm({...productForm, type: e.target.value})} />
                                     <input type="text" placeholder="Бренд" value={productForm.brand} onChange={e => setProductForm({...productForm, brand: e.target.value})} />
                                     <input 
                                         type="number" 
@@ -396,7 +396,7 @@ export default function AdminPanel() {
                                             name: product.name,
                                             model: product.model || '',
                                             price: product.price,
-                                            type: product.type || '',
+                                            type_size: product.type_size || '',
                                             brand: product.brand || '',
                                             in_stock: product.stock || 0
                                         });
