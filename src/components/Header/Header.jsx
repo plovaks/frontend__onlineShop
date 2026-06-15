@@ -55,7 +55,6 @@ export default function Header({ className, needsVKPadding }) {
                 });
                 if (res.ok) {
                     const data = await res.json();
-                    console.log("Данные пользователя:", data);
                     console.log("is_admin:", data.is_admin);
                     setIsAdmin(data.is_admin || false);
                 } else {

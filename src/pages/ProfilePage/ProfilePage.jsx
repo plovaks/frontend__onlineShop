@@ -5,7 +5,7 @@ import Header from "../../components/Header/Header.jsx"
 import './ProfilePage.css'
 
 export default function ProfilePage() {
-    const { user, logout } = useAuth()  // ← убрали token
+    const { user, logout, loading } = useAuth()
     const navigate = useNavigate()
 
     const [orders, setOrders] = useState([])
@@ -16,10 +16,7 @@ export default function ProfilePage() {
     const [editError, setEditError] = useState('')
     const [expandedOrder, setExpandedOrder] = useState(null)
 
-    useEffect(() => {
-        if (!user) navigate('/')
-    }, [user, navigate])
-
+    // Загрузка заказов
     useEffect(() => {
         if (!user) return
         const fetchOrders = async () => {
@@ -33,7 +30,6 @@ export default function ProfilePage() {
                 }
                 const data = await res.json()
                 console.log('Ответ сервера:', data)
-                // Если пришёл объект, а не массив — оборачиваем
                 const ordersData = Array.isArray(data) ? data : []
                 setOrders(ordersData)
             } catch (err) {
@@ -131,7 +127,15 @@ export default function ProfilePage() {
         })
     }
 
-    if (!user) return null
+    // Проверка загрузки и авторизации
+    if (loading) {
+        return <div className="profile__loading">Загрузка профиля...</div>
+    }
+
+    if (!user) {
+        navigate('/')
+        return null
+    }
 
     return (
         <>
