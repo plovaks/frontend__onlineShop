@@ -239,7 +239,18 @@ export default function ProfilePage() {
                         ) : orders.length === 0 ? (
                             <div className="profile__empty">
                                 <p>У вас пока нет заказов</p>
-                                <button className="profile__shop-btn" onClick={() => navigate('/catalog')}>
+                                <button 
+                                    className="profile__shop-btn" 
+                                    onClick={() => {
+                                        navigate('/')
+                                        setTimeout(() => {
+                                            const catalogElement = document.getElementById('catalog')
+                                            if (catalogElement) {
+                                                catalogElement.scrollIntoView({ behavior: 'smooth' })
+                                            }
+                                        }, 100)
+                                    }}
+                                >
                                     Перейти в каталог
                                 </button>
                             </div>
