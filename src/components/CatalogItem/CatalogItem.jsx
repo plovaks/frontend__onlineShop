@@ -73,9 +73,6 @@ export default function CatalogItem({
               <p>Емкость: {capcity} мАч</p>
               <p>Напряжение: {voltage} В</p>
               <p>Сопротивление: {resistance} мОм</p>
-              <p className={isOutOfStock ? 'out-stock' : 'in-stock'}>
-                {isOutOfStock ? 'Нет в наличии' : '' }
-              </p>
             </div>
           </div>
         </div>

@@ -173,13 +173,13 @@
 }
 
 .item__out-of-stock {
-    width: 100px;
+    /* width: 100px; */
     height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: transparent;
-    border: 1px solid #dc2626;
+    /* border: 1px solid #dc2626; */
     border-radius: 12px;
     color: #dc2626;
     font-size: 13px;
