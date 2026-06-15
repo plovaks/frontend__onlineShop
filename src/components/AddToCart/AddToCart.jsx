@@ -9,10 +9,11 @@ export default function AddToCart({ product, price, salePrice }) {
     const navigate = useNavigate();
     
     const inCart = cart.find(item => item.id === product.id);
+    const maxStock = product.stock || 0;
+    const isOutOfStock = maxStock <= 0;
     
     const [isAdded, setIsAdded] = useState(!!inCart);
     const [count, setCount] = useState(inCart ? inCart.quantity : 1);
-    const maxStock = product.stock || 0;
 
     useEffect(() => {
         if (inCart) {
@@ -25,6 +26,10 @@ export default function AddToCart({ product, price, salePrice }) {
     }, [inCart]);
 
     const handleAddClick = () => {
+        if (isOutOfStock) {
+            alert("Товар отсутствует на складе");
+            return;
+        }
         setIsAdded(true);
         addToCart(product, count);
     };
@@ -32,15 +37,12 @@ export default function AddToCart({ product, price, salePrice }) {
     const updateCount = (newCount) => {
         let val = Math.max(1, Number(newCount));
         if (val > maxStock && maxStock > 0) {
-            alert(`Недостаточно товара. В наличии: ${maxStock} шт.`);
             val = maxStock;
         }
         setCount(val);
         if (isAdded && inCart) {
-            // Используем updateQuantity для изменения количества
             updateQuantity(product.id, val, maxStock);
         } else if (isAdded && !inCart) {
-            // Если товар только что добавили, но его ещё нет в корзине
             addToCart(product, val);
         }
     };
@@ -60,6 +62,27 @@ export default function AddToCart({ product, price, salePrice }) {
         navigate('/cart');
     };
 
+    // Если товара нет в наличии 
+    if (isOutOfStock) {
+        return (
+            <div className="purchase__container">
+                <p className="purchase__price">
+                    {price} <img src={ruble} alt="ruble" />
+                </p>
+                <p className="out-of-stock-message" style={{ color: '#dc2626', fontSize: '14px', fontWeight: '500' }}>
+                    Нет в наличии
+                </p>
+                <button 
+                    className="btn purchase__addToCart" 
+                    disabled={true}
+                    style={{ opacity: 0.5, cursor: 'not-allowed', backgroundColor: '#ccc' }}
+                >
+                    Добавить в корзину
+                </button>
+            </div>
+        );
+    }
+
     if (!isAdded) {
         return (
             <div className="purchase__container">
@@ -68,8 +91,7 @@ export default function AddToCart({ product, price, salePrice }) {
                 </p>
                 <button 
                     className="btn purchase__addToCart" 
-                    onClick={handleAddClick} 
-                    disabled={count >= maxStock && maxStock > 0}
+                    onClick={handleAddClick}
                 >
                     Добавить в корзину
                 </button>
@@ -81,6 +103,12 @@ export default function AddToCart({ product, price, salePrice }) {
         <div className="purchase__container">
             <p className="purchase__price">
                 {price} <img src={ruble} alt="ruble" />
+            </p>
+            {salePrice && (
+                <p className="purchase__sales">{salePrice}р/шт при покупке от 100шт</p>
+            )}
+            <p className="in-stock-message" style={{ color: '#10b981', fontSize: '12px', marginTop: '4px' }}>
+                В наличии: {maxStock} шт.
             </p>
             <div className="counter__wrapper">
                 <button className="btn purchase__inCart" onClick={goToCart}>
@@ -104,7 +132,7 @@ export default function AddToCart({ product, price, salePrice }) {
                     <button 
                         className="counter__btn" 
                         onClick={() => updateCount(count + 1)}
-                        disabled={count >= maxStock && maxStock > 0}
+                        disabled={count >= maxStock}
                     >
                         +
                     </button>

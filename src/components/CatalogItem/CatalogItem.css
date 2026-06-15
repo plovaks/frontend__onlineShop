@@ -171,3 +171,59 @@
         font-size:18px;
     }
 }
+
+.item__out-of-stock {
+    width: 100px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid #dc2626;
+    border-radius: 12px;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+
+.item__mobile-out-of-stock {
+    min-width: 100px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid #dc2626;
+    border-radius: 12px;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 12px;
+    white-space: nowrap;
+}
+
+
+.in-stock {
+    color: #10b981;
+    font-weight: 500;
+}
+
+.out-stock {
+    color: #dc2626;
+    font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+    .item__out-of-stock {
+        width: auto;
+        padding: 0 12px;
+    }
+    
+    .item__mobile-out-of-stock {
+        font-size: 12px;
+        min-width: 90px;
+        height: 38px;
+    }
+}
