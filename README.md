@@ -1,16 +1,43 @@
-# React + Vite
+# Power Store - frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Клиентская часть интернет-магазина литий-ионных аккумуляторов. Также реализован VK Mini App с функционалом сайта.
+Бэкенд (Node.js + Express + PostgreSQL) лежит отдельно: (...)
+ 
+## Стек
+- **React** + **Vite**
+- **React Router** 
+- **VKUI** и **VK Bridge** - интеграция с VK Mini Apps
+- **Framer Motion** - анимации
+- **ESLint** - линтинг
+- **gh-pages** - деплой (на момент показа проекта сайт был задеплоен на хостинге Amvera)
 
-Currently, two official plugins are available:
+## Структура проекта
+```
+src/
+├── assets/          — картинки
+├── components/
+│   ├── AboutUsBlocks/   — блоки страницы «О нас»
+│   ├── AddToCart/       — блок добавления в корзину
+│   ├── AdminPanel/      — админ-панель
+│   ├── AuthModal/       — окно входа и регистрации
+│   ├── CartItem/        — позиция в корзине
+│   ├── CatalogItem/     — карточка товара
+│   ├── DropdownMenu/    — выпадающее меню
+│   ├── Filters/         — фильтры каталога
+│   ├── Header/          — шапка сайта
+│   └── Order/           — оформление заказа
+├── Layout/          — общий каркас страниц
+├── pages/           — страницы приложения
+├── AuthContext.jsx      — состояние авторизации
+├── CartContext.jsx      — состояние корзины
+├── PrivacyContext.jsx   — согласие на обработку данных
+├── App.jsx          
+└── main.jsx         
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Авторизация
+ 
+Используется схема из двух JWT-токенов: access-токен и refresh-токен. Логика хранится в `AuthContext.jsx`: вход, регистрация, обновление токена и данные текущего пользователя (включая флаг `is_admin`, по которому открывается админ-панель).
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Изображения
+В директории /src/screenshots находятся изображения страниц сайта.
