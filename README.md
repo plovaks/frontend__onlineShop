@@ -3,8 +3,10 @@
 Клиентская часть интернет-магазина литий-ионных аккумуляторов. Также реализован VK Mini App с функционалом сайта.
 Бэкенд (Node.js + Express + PostgreSQL) лежит отдельно: (...)
  
-## Стек
+## Стек frontend
 - **React** + **Vite**
+- **JavaScript**
+- **HTMl/CSS**
 - **React Router** 
 - **VKUI** и **VK Bridge** - интеграция с VK Mini Apps
 - **Framer Motion** - анимации
